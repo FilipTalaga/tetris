@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const title = 'My Minimal React Webpack Babel Setup';
+class App extends Component {
+    state = {}
+    render() {
+        return (
+            <canvas>
 
-const App = () => <h2>{title}</h2>;
+            </canvas>
+        );
+    }
+}
 
 export default App;
