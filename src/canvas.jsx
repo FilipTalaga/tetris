@@ -1,32 +1,26 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import PureCanvas from './pure-canvas';
 
 class Canvas extends Component {
-    constructor(props) {
-        super(props);
-        this.canvasRef = createRef();
-    }
-
     componentDidUpdate() {
-        // Draws a square in the middle of the canvas rotated
-        // around the centre by this.props.angle
         const { angle } = this.props;
-        const canvas = this.canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
-        ctx.save();
-        ctx.beginPath();
-        ctx.clearRect(0, 0, width, height);
-        ctx.translate(width / 2, height / 2);
-        ctx.rotate((angle * Math.PI) / 180);
-        ctx.fillStyle = '#733C82';
-        ctx.fillRect(-width / 4, -height / 4, width / 2, height / 2);
-        ctx.restore();
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.translate(this.width / 2, this.height / 2);
+        this.ctx.rotate((angle * Math.PI) / 180);
+        this.ctx.fillStyle = '#733C82';
+        this.ctx.fillRect(-this.width / 4, -this.height / 4, this.width / 2, this.height / 2);
+        this.ctx.restore();
     }
 
     render() {
-        return <canvas style={{ margin: 'auto' }} width="300" height="300" ref={this.canvasRef} />;
+        return <PureCanvas contextRef={ctx => {
+            this.ctx = ctx;
+            this.width = this.ctx.canvas.width;
+            this.height = this.ctx.canvas.height;
+        }} />;
     }
 }
 
