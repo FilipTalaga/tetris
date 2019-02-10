@@ -20,6 +20,11 @@
     "plugins": [
         "react"
     ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
         "camelcase": "error",
         "no-var": "error",
