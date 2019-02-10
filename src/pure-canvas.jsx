@@ -39,12 +39,14 @@ class PureCanvas extends Component {
                 height={this.state.height}
                 style={{ margin: 'auto' }}
                 ref={node => node ? this.props.contextRef(node.getContext('2d')) : null}
+                onClick={this.props.onClick}
             />
         );
     }
 }
 
 PureCanvas.propTypes = {
+    onClick: PropTypes.func,
     contextRef: PropTypes.func
 };
 

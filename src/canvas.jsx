@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PureCanvas from './pure-canvas';
-import { primary } from './colors';
+import colors from './colors';
 
 class Canvas extends Component {
+    componentDidMount() {
+        this.ctx.fillStyle = colors.primary;
+    }
+    constructor(props) {
+        super(props);
+        this.colors = [
+            colors.primary,
+            colors.red,
+            colors.green,
+            colors.yellow,
+        ];
+        this.activeColor = 0;
+    }
+
     componentDidUpdate() {
         /*const { angle } = this.props;
         this.ctx.save();
@@ -17,10 +31,14 @@ class Canvas extends Component {
 
         const { angle } = this.props;
         this.ctx.clearRect(0, 0, this.width, this.height);
-        this.ctx.fillStyle = primary;
+        this.ctx.fillStyle = this.colors[this.activeColor];
         for (let i = 0; i < this.width; i += 40) {
             this.ctx.fillRect(i, (angle + i) % this.height, 20, 20);
         }
+    }
+
+    handleClick = () => {
+        this.activeColor = (this.activeColor + 1) % this.colors.length;
     }
 
     render() {
@@ -28,7 +46,7 @@ class Canvas extends Component {
             this.ctx = ctx;
             this.width = this.ctx.canvas.width;
             this.height = this.ctx.canvas.height;
-        }} />;
+        }} onClick={this.handleClick} />;
     }
 }
 
