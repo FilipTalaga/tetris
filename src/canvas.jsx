@@ -1,57 +1,70 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import PureCanvas from './pure-canvas';
 import colors from './colors';
 
 class Canvas extends Component {
+    player = { level: 0, column: 4 };
+    grid = Array(16).fill(null).map(() => Array(9).fill(false));
+    running = true;
+
     componentDidMount() {
-        this.ctx.fillStyle = colors.primary;
-    }
-    constructor(props) {
-        super(props);
-        this.colors = [
-            colors.primary,
-            colors.red,
-            colors.green,
-            colors.yellow,
-        ];
-        this.activeColor = 0;
+        this.spawn();
     }
 
     componentDidUpdate() {
-        /*const { angle } = this.props;
-        this.ctx.save();
-        this.ctx.beginPath();
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        this.ctx.translate(this.width / 2, this.height / 2);
-        this.ctx.rotate((angle * Math.PI) / 180);
-        this.ctx.fillStyle = '#733C82';
-        this.ctx.fillRect(-this.width / 4, -this.height / 4, this.width / 2, this.height / 2);
-        this.ctx.restore();*/
+        if (!this.running) return;
 
-        const { angle } = this.props;
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        this.ctx.fillStyle = this.colors[this.activeColor];
-        for (let i = 0; i < this.width; i += 40) {
-            this.ctx.fillRect(i, (angle + i) % this.height, 20, 20);
+        this.move();
+        this.drawGrid();
+    }
+
+    onContextUpdate = ctx => {
+        this.ctx = ctx;
+        this.width = this.ctx.canvas.width;
+        this.height = this.ctx.canvas.height;
+    }
+
+    spawn() {
+        this.player.level = 0;
+        this.player.column = Math.floor(Math.random() * 10);
+        if (this.grid[this.player.level][this.player.column]) {
+            this.running = false;
+            alert('game over');
+        } else {
+            this.grid[this.player.level][this.player.column] = true;
         }
     }
 
-    handleClick = () => {
-        this.activeColor = (this.activeColor + 1) % this.colors.length;
+    move() {
+        this.player.level++;
+        if (this.player.level >= 16 || this.grid[this.player.level][this.player.column]) {
+            this.spawn();
+        } else {
+            this.grid[this.player.level - 1][this.player.column] = false;
+            this.grid[this.player.level][this.player.column] = true;
+        }
+    }
+
+    drawGrid() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.fillStyle = colors.primary;
+        for (let level = 0; level < 16; level++) {
+            for (let column = 0; column < 9; column++) {
+                if (this.grid[level][column]) {
+                    this.drawRect(level, column);
+                }
+            }
+        }
+    }
+
+    drawRect(level, column) {
+        const size = this.width / 9;
+        this.ctx.fillRect(column * size, level * size, size, size);
     }
 
     render() {
-        return <PureCanvas contextRef={ctx => {
-            this.ctx = ctx;
-            this.width = this.ctx.canvas.width;
-            this.height = this.ctx.canvas.height;
-        }} onClick={this.handleClick} />;
+        return <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />;
     }
 }
-
-Canvas.propTypes = {
-    angle: PropTypes.number
-};
 
 export default Canvas;

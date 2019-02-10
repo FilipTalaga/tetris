@@ -4,24 +4,29 @@ import Canvas from './canvas';
 class Animation extends Component {
     constructor(props) {
         super(props);
-        this.state = { angle: 0 };
+        this.state = { tick: 0 };
     }
 
     componentDidMount() {
+        this.intervalId = setInterval(this.onTick, 20);
         this.rAF = requestAnimationFrame(this.updateAnimationState);
     }
 
+    onTick = () => {
+        this.setState(prevState => ({ tick: prevState.tick + 1 }));
+    }
+
     updateAnimationState = () => {
-        this.setState(prevState => ({ angle: prevState.angle + 5 }));
         this.rAF = requestAnimationFrame(this.updateAnimationState);
     }
 
     componentWillUnmount() {
+        clearInterval(this.intervalId);
         cancelAnimationFrame(this.rAF);
     }
 
     render() {
-        return <Canvas angle={this.state.angle} />;
+        return <Canvas />;
     }
 }
 
