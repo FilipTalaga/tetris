@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
+import Animation from './animation';
 
 class App extends Component {
-    state = {}
     render() {
-        return (
-            <canvas>
-
-            </canvas>
-        );
+        return <Animation />;
     }
 }
 

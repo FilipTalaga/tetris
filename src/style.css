@@ -1,4 +1,5 @@
 html, body {
+    height: 100%;
 	width: 100%;
 	padding: 0;
 	margin: 0;
@@ -12,4 +13,9 @@ html, body {
 
 * {
 	box-sizing: border-box;
+}
+
+#root {
+    height: 100%;
+    display: flex;
 }
