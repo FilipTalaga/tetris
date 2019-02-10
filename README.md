@@ -1,6 +1,6 @@
-# Tetris
+# Coffee Pot
 
-Simple PWA tetris game, build with preact.
+Simple PWA tetris game, build with React
 
 ## Development server
 
