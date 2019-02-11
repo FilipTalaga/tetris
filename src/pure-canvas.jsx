@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 class PureCanvas extends Component {
     state = {
-        width: 180,
-        height: 320
+        width: 260,
+        height: 520
     }
 
     componentDidMount() {
-        this.updateDimensions();
-        window.addEventListener('resize', this.updateDimensions);
+        //this.updateDimensions();
+        //window.addEventListener('resize', this.updateDimensions);
     }
 
     updateDimensions = () => {
@@ -29,7 +29,7 @@ class PureCanvas extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.updateDimensions);
+        //window.removeEventListener('resize', this.updateDimensions);
     }
 
     render() {

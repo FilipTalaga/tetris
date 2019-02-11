@@ -2,32 +2,35 @@ import React, { Component } from 'react';
 import Canvas from './canvas';
 
 class Animation extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { tick: 0 };
-    }
+    child = React.createRef();
+    lastRender = 0;
 
     componentDidMount() {
-        this.intervalId = setInterval(this.onTick, 20);
-        this.rAF = requestAnimationFrame(this.updateAnimationState);
-    }
-
-    onTick = () => {
-        this.setState(prevState => ({ tick: prevState.tick + 1 }));
-    }
-
-    updateAnimationState = () => {
-        this.rAF = requestAnimationFrame(this.updateAnimationState);
+        document.addEventListener('keydown', this.handleKeyDown);
+        this.rAF = requestAnimationFrame(this.loop);
     }
 
     componentWillUnmount() {
-        clearInterval(this.intervalId);
+        document.removeEventListener('keydown', this.handleKeyDown);
         cancelAnimationFrame(this.rAF);
     }
 
-    render() {
-        return <Canvas />;
+    handleKeyDown = e => {
+        this.child.current.moveSide(e.key);
     }
+
+    loop = timestamp => {
+        const progress = timestamp - this.lastRender;
+        // update every 200 ms
+        if (progress >= 200) {
+            this.lastRender = timestamp;
+            this.child.current.move();
+        }
+        this.child.current.draw();
+        this.rAF = requestAnimationFrame(this.loop);
+    }
+
+    render = () => <Canvas ref={this.child} />;
 }
 
 export default Animation;
