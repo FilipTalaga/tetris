@@ -25,25 +25,21 @@ class Canvas extends Component {
         }
     }
 
-    move() {
+    move(key) {
         if (!this.running) return;
 
-        this.moveDown();
-    }
+        switch (key) {
+            case 'ArrowRight':
+                this.moveRight();
+                break;
 
-    moveSide(key) {
-        if (!this.running) return;
+            case 'ArrowLeft':
+                this.moveLeft();
+                break;
 
-        if (key === 'ArrowRight') {
-            this.moveRight();
-        }
-
-        if (key === 'ArrowLeft') {
-            this.moveLeft();
-        }
-
-        if (key === 'ArrowDown') {
-            this.moveDown();
+            case 'ArrowDown':
+                this.moveDown();
+                break;
         }
     }
 
@@ -102,11 +98,12 @@ class Canvas extends Component {
         const button = {
             border: 'none',
             outline: 'none',
-            width: '80px',
-            height: '40px',
+            width: '60px',
+            height: '60px',
+            borderRadius: '14px',
             background: colors.yellow,
-            color: '#dadada',
-            fontWeight: 'bold',
+            color: colors.background,
+            fontWeight: 900,
             fontSize: '30px'
         };
 
@@ -115,7 +112,7 @@ class Canvas extends Component {
                 <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
                 <div style={{ display: 'flex', justifyContent: 'space-around', padding: '20px' }}>
                     <button onClick={this.moveLeft} style={button}>{'<'}</button>
-                    <button onClick={this.moveDown} style={button}>v</button>
+                    <button onClick={this.moveDown} style={button}>{'v'}</button>
                     <button onClick={this.moveRight} style={button}>{'>'}</button>
                 </div>
             </React.Fragment>

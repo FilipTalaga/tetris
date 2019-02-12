@@ -16,7 +16,7 @@ class Animation extends Component {
     }
 
     handleKeyDown = e => {
-        this.child.current.moveSide(e.key);
+        this.child.current.move(e.key);
     }
 
     loop = timestamp => {
@@ -24,7 +24,7 @@ class Animation extends Component {
         // update every 200 ms
         if (progress >= 200) {
             this.lastRender = timestamp;
-            this.child.current.move();
+            this.child.current.move('ArrowDown');
         }
         this.child.current.draw();
         this.rAF = requestAnimationFrame(this.loop);
