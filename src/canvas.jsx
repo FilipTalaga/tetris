@@ -2,96 +2,85 @@ import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
 import colors from './colors';
 
-const rows = 20;
-const columns = 10;
+const makeGrid = (rows, cols, grid = Array(rows * cols).fill(0)) => ({
+    elements: () => grid,
+    rows: () => rows,
+    cols: () => cols,
+    get: (row, col) => grid[row * cols + col],
+    set: (row, col, value) => grid[row * cols + col] = value
+});
+
+const makeDrawer = (ctx, width, height, grid) => ({
+    clearCtx: () => ctx.clearRect(0, 0, width, height),
+    colorCtx: (color) => ctx.fillStyle = color,
+    drawRect: (row, col) => {
+        const size = width / grid.cols();
+        ctx.fillRect(col * size, row * size, size, size);
+    }
+});
+
+const makePlayer = grid => ((row, col) => ({
+    moveDown: () => {
+        if (grid.get(row + 1, col) || row + 1 >= grid.rows()) {
+            row = 0;
+            col = Math.floor(Math.random() * grid.cols());
+        } else {
+            grid.set(row++, col, 0);
+        }
+        grid.set(row, col, 1);
+    },
+    moveLeft: () => {
+        if (grid.get(row, col - 1) || col - 1 < 0) return;
+
+        grid.set(row, col--, 0);
+        grid.set(row, col, 1);
+    },
+    moveRight: () => {
+        if (grid.get(row, col + 1) || col + 1 >= grid.cols()) return;
+
+        grid.set(row, col++, 0);
+        grid.set(row, col, 1);
+    }
+}))(grid.rows() - 1, 0);
 
 class Canvas extends Component {
-    player = { level: 0, column: 4 };
-    grid = Array(rows * columns).fill(0);
-    running = true;
-
-    componentDidMount() {
-        this.spawnPlayer();
-    }
-
-    spawnPlayer() {
-        this.player.level = 0;
-        this.player.column = Math.floor(Math.random() * columns);
-        if (this.grid[this.player.level * columns + this.player.column]) {
-            this.running = false;
-            alert('game over');
-        } else {
-            this.grid[this.player.level * columns + this.player.column] = 1;
-        }
-    }
-
-    move(key) {
-        if (!this.running) return;
-
-        switch (key) {
-            case 'ArrowRight':
-                this.moveRight();
-                break;
-
-            case 'ArrowLeft':
-                this.moveLeft();
-                break;
-
-            case 'ArrowDown':
-                this.moveDown();
-                break;
-        }
-    }
-
-    moveLeft = () => {
-        if (this.player.column % columns > 0 &&
-            !this.grid[this.player.level * columns + this.player.column - 1]) {
-            this.grid[this.player.level * columns + this.player.column] = 0;
-            this.player.column--;
-            this.grid[this.player.level * columns + this.player.column] = 1;
-        }
-    }
-
-    moveRight = () => {
-        if (this.player.column % columns < (columns - 1) &&
-            !this.grid[this.player.level * columns + this.player.column + 1]) {
-            this.grid[this.player.level * columns + this.player.column] = 0;
-            this.player.column++;
-            this.grid[this.player.level * columns + this.player.column] = 1;
-        }
-    }
-
-    moveDown = () => {
-        if (this.player.level < (rows - 1) &&
-            !this.grid[(this.player.level + 1) * columns + this.player.column]) {
-            this.grid[this.player.level * columns + this.player.column] = 0;
-            this.player.level++;
-            this.grid[this.player.level * columns + this.player.column] = 1;
-        } else {
-            this.spawnPlayer();
-        }
-    }
-
-    draw() {
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        this.ctx.fillStyle = colors.primary;
-        this.grid.forEach((square, index) => {
-            if (square) {
-                this.fillRect(Math.floor(index / columns), index % columns);
-            }
-        });
-
-    }
-
-    fillRect(level, column) {
-        const size = this.width / columns;
-        this.ctx.fillRect(column * size, level * size, size, size);
-    }
-
     onContextUpdate = ctx => {
         this.ctx = ctx;
         this.width = this.ctx.canvas.width;
         this.height = this.ctx.canvas.height;
+
+        this.grid = makeGrid(20, 10);
+        this.drawer = makeDrawer(this.ctx, this.width, this.height, this.grid);
+        this.player = makePlayer(this.grid);
+    }
+
+    move(key) {
+        switch (key) {
+            case 'ArrowDown':
+                this.player.moveDown();
+                break;
+
+            case 'ArrowLeft':
+                this.player.moveLeft();
+                break;
+
+            case 'ArrowRight':
+                this.player.moveRight();
+                break;
+        }
+    }
+
+    draw() {
+        this.drawer.clearCtx();
+        this.drawer.colorCtx(colors.primary);
+        this.grid.elements().forEach((square, index) => {
+            if (square) {
+                const row = Math.floor(index / this.grid.cols());
+                const col = index % this.grid.cols();
+                this.drawer.drawRect(row, col);
+            }
+        });
+
     }
 
     render() {
@@ -111,9 +100,9 @@ class Canvas extends Component {
             <React.Fragment>
                 <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
                 <div style={{ display: 'flex', justifyContent: 'space-around', padding: '20px' }}>
-                    <button onClick={this.moveLeft} style={button}>{'<'}</button>
-                    <button onClick={this.moveDown} style={button}>{'v'}</button>
-                    <button onClick={this.moveRight} style={button}>{'>'}</button>
+                    <button onClick={() => this.player.moveLeft()} style={button}>{'<'}</button>
+                    <button onClick={() => this.player.moveDown()} style={button}>{'v'}</button>
+                    <button onClick={() => this.player.moveRight()} style={button}>{'>'}</button>
                 </div>
             </React.Fragment>
         );
