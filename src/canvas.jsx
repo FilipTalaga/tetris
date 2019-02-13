@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
 import colors from './colors';
 
-const makeGrid = (rows, cols, grid = Array(rows * cols).fill(0)) => ({
+const makeGrid = (rows, cols) => (grid => ({
     elements: () => grid,
     rows: () => rows,
     cols: () => cols,
     get: (row, col) => grid[row * cols + col],
     set: (row, col, value) => grid[row * cols + col] = value
-});
+}))(Array(rows * cols).fill(0));
 
 const makeDrawer = (ctx, width, height, grid) => ({
     clearCtx: () => ctx.clearRect(0, 0, width, height),
