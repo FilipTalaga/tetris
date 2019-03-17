@@ -10,23 +10,18 @@ const makeGrid = (rows, cols) => (grid => ({
     set: (row, col, value) => grid[row * cols + col] = value
 }))(Array(rows * cols).fill(0));
 
-const makeDrawer = (ctx, width, height, grid) => ({
-    clearCtx: () => ctx.clearRect(0, 0, width, height),
+const makeDrawer = (ctx, ctxState, grid) => ({
+    clearCtx: () => ctx.clearRect(0, 0, ctxState.width, ctxState.height),
     colorCtx: (color) => ctx.fillStyle = color,
-    drawBackground: () => ctx.fillRect(0, 0, width, height),
-    drawRect: (row, col) => {
-        const size = (10 * width) / (11 * grid.cols() + 1);
-        const gap = size / 10;
-        ctx.fillRect(gap + col * (size + gap), gap + row * (size + gap), size, size);
-    },
+    drawBackground: () => ctx.fillRect(0, 0, ctxState.width, ctxState.height),
+    drawRect: (row, col) => ctx.fillRect(ctxState.gap + col * (ctxState.size + ctxState.gap),
+        ctxState.gap + row * (ctxState.size + ctxState.gap), ctxState.size, ctxState.size),
     drawNet: () => {
-        const size = (10 * width) / (11 * grid.cols() + 1);
-        const gap = size / 10;
         for (let row = 0; row <= grid.rows(); row++) {
-            ctx.fillRect(0, row * (size + gap), width, gap);
+            ctx.fillRect(0, row * (ctxState.size + ctxState.gap), ctxState.width, ctxState.gap);
         }
         for (let col = 0; col <= grid.cols(); col++) {
-            ctx.fillRect(col * (size + gap), 0, gap, height);
+            ctx.fillRect(col * (ctxState.size + ctxState.gap), 0, ctxState.gap, ctxState.height);
         }
     }
 });
@@ -84,13 +79,10 @@ const generateShape = () => {
 };
 
 class Canvas extends Component {
-    onContextUpdate = ctx => {
+    onContextUpdate = (ctx, ctxState) => {
         this.ctx = ctx;
-        this.width = this.ctx.canvas.width;
-        this.height = this.ctx.canvas.height;
-
         this.grid = makeGrid(20, 10);
-        this.drawer = makeDrawer(this.ctx, this.width, this.height, this.grid);
+        this.drawer = makeDrawer(this.ctx, ctxState, this.grid);
         this.player = makePlayer(this.grid, generateShape());
     }
 
@@ -142,7 +134,7 @@ class Canvas extends Component {
         return (
             <React.Fragment>
                 <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
-                <div style={{ display: 'flex', justifyContent: 'space-around', padding: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-evenly', paddingBottom: '20px' }}>
                     <button onClick={() => this.player.moveLeft()} style={button}>{'<'}</button>
                     <button onClick={() => this.player.moveDown()} style={button}>{'v'}</button>
                     <button onClick={() => this.player.moveRight()} style={button}>{'>'}</button>

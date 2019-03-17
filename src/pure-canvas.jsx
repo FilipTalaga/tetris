@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class PureCanvas extends Component {
-    state = {
-        width: 260,
-        height: 517
+    constructor(props) {
+        super(props);
+        const size = 24;
+        const gap = Math.round(size * 0.1);
+
+        this.state = {
+            size: size,
+            gap: gap,
+            width: 10 * size + 11 * gap,
+            height: 20 * size + 21 * gap,
+        };
     }
 
     componentDidMount() {
@@ -38,7 +46,7 @@ class PureCanvas extends Component {
                 width={this.state.width}
                 height={this.state.height}
                 style={{ margin: 'auto' }}
-                ref={node => node ? this.props.contextRef(node.getContext('2d')) : null}
+                ref={node => node ? this.props.contextRef(node.getContext('2d'), this.state) : null}
                 onClick={this.props.onClick}
             />
         );
