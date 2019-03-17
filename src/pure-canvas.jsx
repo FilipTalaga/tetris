@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class PureCanvas extends Component {
     state = {
         width: 260,
-        height: 520
+        height: 517
     }
 
     componentDidMount() {

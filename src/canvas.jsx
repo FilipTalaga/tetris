@@ -13,35 +13,75 @@ const makeGrid = (rows, cols) => (grid => ({
 const makeDrawer = (ctx, width, height, grid) => ({
     clearCtx: () => ctx.clearRect(0, 0, width, height),
     colorCtx: (color) => ctx.fillStyle = color,
+    drawBackground: () => ctx.fillRect(0, 0, width, height),
     drawRect: (row, col) => {
-        const size = width / grid.cols();
-        ctx.fillRect(col * size, row * size, size, size);
+        const size = (10 * width) / (11 * grid.cols() + 1);
+        const gap = size / 10;
+        ctx.fillRect(gap + col * (size + gap), gap + row * (size + gap), size, size);
+    },
+    drawNet: () => {
+        const size = (10 * width) / (11 * grid.cols() + 1);
+        const gap = size / 10;
+        for (let row = 0; row <= grid.rows(); row++) {
+            ctx.fillRect(0, row * (size + gap), width, gap);
+        }
+        for (let col = 0; col <= grid.cols(); col++) {
+            ctx.fillRect(col * (size + gap), 0, gap, height);
+        }
     }
 });
 
-const makePlayer = grid => ((row, col) => ({
+const makePlayer = (grid, shape) => ({
     moveDown: () => {
-        if (grid.get(row + 1, col) || row + 1 >= grid.rows()) {
-            row = 0;
-            col = Math.floor(Math.random() * grid.cols());
+        shape.forEach(x => grid.set(x.row, x.col, 0));
+        const isCollision = shape.some(x => grid.get(x.row + 1, x.col));
+        const isEnd = shape.some(x => x.row + 1 >= grid.rows());
+        if (isCollision || isEnd) {
+            shape.forEach(x => grid.set(x.row, x.col, 1));
+            shape = generateShape();
         } else {
-            grid.set(row++, col, 0);
+            shape.forEach(x => grid.set(++x.row, x.col, 1));
         }
-        grid.set(row, col, 1);
     },
     moveLeft: () => {
-        if (grid.get(row, col - 1) || col - 1 < 0) return;
-
-        grid.set(row, col--, 0);
-        grid.set(row, col, 1);
+        shape.forEach(x => grid.set(x.row, x.col, 0));
+        const isCollision = shape.some(x => grid.get(x.row, x.col - 1));
+        const isEnd = shape.some(x => x.col - 1 < 0);
+        if (isCollision || isEnd) {
+            shape.forEach(x => grid.set(x.row, x.col, 1));
+        } else {
+            shape.forEach(x => grid.set(x.row, --x.col, 1));
+        }
     },
     moveRight: () => {
-        if (grid.get(row, col + 1) || col + 1 >= grid.cols()) return;
-
-        grid.set(row, col++, 0);
-        grid.set(row, col, 1);
+        shape.forEach(x => grid.set(x.row, x.col, 0));
+        const isCollision = shape.some(x => grid.get(x.row, x.col + 1));
+        const isEnd = shape.some(x => x.col + 1 >= grid.cols());
+        if (isCollision || isEnd) {
+            shape.forEach(x => grid.set(x.row, x.col, 1));
+        } else {
+            shape.forEach(x => grid.set(x.row, ++x.col, 1));
+        }
     }
-}))(grid.rows() - 1, 0);
+});
+
+const generateShape = () => {
+    const shapes = [
+        [
+            { row: 0, col: 3 },
+            { row: 0, col: 4 },
+            { row: 0, col: 5 },
+            { row: 1, col: 5 }
+        ], [
+            { row: 0, col: 4 },
+            { row: 0, col: 5 },
+            { row: 1, col: 4 },
+            { row: 1, col: 5 }
+        ]
+    ];
+
+    return shapes[Math.floor(Math.random() * 2)];
+};
 
 class Canvas extends Component {
     onContextUpdate = ctx => {
@@ -51,7 +91,7 @@ class Canvas extends Component {
 
         this.grid = makeGrid(20, 10);
         this.drawer = makeDrawer(this.ctx, this.width, this.height, this.grid);
-        this.player = makePlayer(this.grid);
+        this.player = makePlayer(this.grid, generateShape());
     }
 
     move(key) {
@@ -72,6 +112,10 @@ class Canvas extends Component {
 
     draw() {
         this.drawer.clearCtx();
+        this.drawer.colorCtx(colors.background);
+        this.drawer.drawBackground();
+        this.drawer.colorCtx(colors.net);
+        this.drawer.drawNet(this.grid.cols(), this.grid.rows());
         this.drawer.colorCtx(colors.primary);
         this.grid.elements().forEach((square, index) => {
             if (square) {
@@ -80,7 +124,6 @@ class Canvas extends Component {
                 this.drawer.drawRect(row, col);
             }
         });
-
     }
 
     render() {
