@@ -71,11 +71,26 @@ const generateShape = () => {
         { row: 0, col: 5 },
         { row: 1, col: 4 },
         { row: 1, col: 5 }
+    ], [
+        { row: 0, col: 5 },
+        { row: 1, col: 4 },
+        { row: 1, col: 5 },
+        { row: 2, col: 4 }
+    ], [
+        { row: 0, col: 4 },
+        { row: 1, col: 4 },
+        { row: 2, col: 4 },
+        { row: 3, col: 4 }
+    ], [
+        { row: 0, col: 4 },
+        { row: 1, col: 4 },
+        { row: 1, col: 5 },
+        { row: 2, col: 4 }
     ]];
 
     return {
-        color: Math.floor(Math.random() * 7) + 1,
-        cords: shapes[Math.floor(Math.random() * 2)]
+        color: Math.floor(Math.random() * brickColors.length) + 1,
+        cords: shapes[Math.floor(Math.random() * shapes.length)]
     };
 };
 
