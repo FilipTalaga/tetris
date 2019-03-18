@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
-import colors from './colors';
+import colors, { brickColors } from './colors';
 
 const makeGrid = (rows, cols) => (grid => ({
     elements: () => grid,
@@ -28,54 +28,55 @@ const makeDrawer = (ctx, ctxState, grid) => ({
 
 const makePlayer = (grid, shape) => ({
     moveDown: () => {
-        shape.forEach(x => grid.set(x.row, x.col, 0));
-        const isCollision = shape.some(x => grid.get(x.row + 1, x.col));
-        const isEnd = shape.some(x => x.row + 1 >= grid.rows());
+        shape.cords.forEach(x => grid.set(x.row, x.col, 0));
+        const isCollision = shape.cords.some(x => grid.get(x.row + 1, x.col));
+        const isEnd = shape.cords.some(x => x.row + 1 >= grid.rows());
         if (isCollision || isEnd) {
-            shape.forEach(x => grid.set(x.row, x.col, 1));
+            shape.cords.forEach(x => grid.set(x.row, x.col, shape.color));
             shape = generateShape();
         } else {
-            shape.forEach(x => grid.set(++x.row, x.col, 1));
+            shape.cords.forEach(x => grid.set(++x.row, x.col, shape.color));
         }
     },
     moveLeft: () => {
-        shape.forEach(x => grid.set(x.row, x.col, 0));
-        const isCollision = shape.some(x => grid.get(x.row, x.col - 1));
-        const isEnd = shape.some(x => x.col - 1 < 0);
+        shape.cords.forEach(x => grid.set(x.row, x.col, 0));
+        const isCollision = shape.cords.some(x => grid.get(x.row, x.col - 1));
+        const isEnd = shape.cords.some(x => x.col - 1 < 0);
         if (isCollision || isEnd) {
-            shape.forEach(x => grid.set(x.row, x.col, 1));
+            shape.cords.forEach(x => grid.set(x.row, x.col, shape.color));
         } else {
-            shape.forEach(x => grid.set(x.row, --x.col, 1));
+            shape.cords.forEach(x => grid.set(x.row, --x.col, shape.color));
         }
     },
     moveRight: () => {
-        shape.forEach(x => grid.set(x.row, x.col, 0));
-        const isCollision = shape.some(x => grid.get(x.row, x.col + 1));
-        const isEnd = shape.some(x => x.col + 1 >= grid.cols());
+        shape.cords.forEach(x => grid.set(x.row, x.col, 0));
+        const isCollision = shape.cords.some(x => grid.get(x.row, x.col + 1));
+        const isEnd = shape.cords.some(x => x.col + 1 >= grid.cols());
         if (isCollision || isEnd) {
-            shape.forEach(x => grid.set(x.row, x.col, 1));
+            shape.cords.forEach(x => grid.set(x.row, x.col, shape.color));
         } else {
-            shape.forEach(x => grid.set(x.row, ++x.col, 1));
+            shape.cords.forEach(x => grid.set(x.row, ++x.col, shape.color));
         }
     }
 });
 
 const generateShape = () => {
-    const shapes = [
-        [
-            { row: 0, col: 3 },
-            { row: 0, col: 4 },
-            { row: 0, col: 5 },
-            { row: 1, col: 5 }
-        ], [
-            { row: 0, col: 4 },
-            { row: 0, col: 5 },
-            { row: 1, col: 4 },
-            { row: 1, col: 5 }
-        ]
-    ];
+    const shapes = [[
+        { row: 0, col: 3 },
+        { row: 0, col: 4 },
+        { row: 0, col: 5 },
+        { row: 1, col: 5 }
+    ], [
+        { row: 0, col: 4 },
+        { row: 0, col: 5 },
+        { row: 1, col: 4 },
+        { row: 1, col: 5 }
+    ]];
 
-    return shapes[Math.floor(Math.random() * 2)];
+    return {
+        color: Math.floor(Math.random() * 7) + 1,
+        cords: shapes[Math.floor(Math.random() * 2)]
+    };
 };
 
 class Canvas extends Component {
@@ -108,9 +109,10 @@ class Canvas extends Component {
         this.drawer.drawBackground();
         this.drawer.colorCtx(colors.net);
         this.drawer.drawNet(this.grid.cols(), this.grid.rows());
-        this.drawer.colorCtx(colors.primary);
+        this.drawer.colorCtx(colors.pink);
         this.grid.elements().forEach((square, index) => {
             if (square) {
+                this.drawer.colorCtx(brickColors[square - 1]);
                 const row = Math.floor(index / this.grid.cols());
                 const col = index % this.grid.cols();
                 this.drawer.drawRect(row, col);
@@ -125,7 +127,6 @@ class Canvas extends Component {
             width: '60px',
             height: '60px',
             borderRadius: '14px',
-            background: colors.yellow,
             color: colors.background,
             fontWeight: 900,
             fontSize: '30px'

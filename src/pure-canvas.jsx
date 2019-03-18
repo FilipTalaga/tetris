@@ -16,29 +16,12 @@ class PureCanvas extends Component {
         };
     }
 
-    componentDidMount() {
-        //this.updateDimensions();
-        //window.addEventListener('resize', this.updateDimensions);
-    }
-
-    updateDimensions = () => {
-        const height = window.innerHeight;
-        const width = window.innerWidth > 600 ? height / 16 * 9 : window.innerWidth;
-
-        this.setState({ width: width, height: height });
-        this.shouldUpdate = true;
-    }
-
     shouldComponentUpdate() {
         if (this.shouldUpdate) {
             this.shouldUpdate = false;
             return true;
         }
         return false;
-    }
-
-    componentWillUnmount() {
-        //window.removeEventListener('resize', this.updateDimensions);
     }
 
     render() {
