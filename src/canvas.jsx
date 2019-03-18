@@ -134,7 +134,7 @@ class Canvas extends Component {
         return (
             <React.Fragment>
                 <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
-                <div style={{ display: 'flex', justifyContent: 'space-evenly', paddingBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-evenly', margin: 'auto 0' }}>
                     <button onClick={() => this.player.moveLeft()} style={button}>{'<'}</button>
                     <button onClick={() => this.player.moveDown()} style={button}>{'v'}</button>
                     <button onClick={() => this.player.moveRight()} style={button}>{'>'}</button>

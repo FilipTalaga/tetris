@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 class PureCanvas extends Component {
     constructor(props) {
         super(props);
-        const size = 24;
-        const gap = Math.round(size * 0.1);
+        const height = window.innerHeight - 80;
+        const size = Math.floor(height / 22.1);
+        const gap = Math.floor(height / 221);
 
         this.state = {
             size: size,
@@ -45,7 +46,7 @@ class PureCanvas extends Component {
             <canvas
                 width={this.state.width}
                 height={this.state.height}
-                style={{ margin: 'auto' }}
+                style={{ margin: 'auto auto 0 auto' }}
                 ref={node => node ? this.props.contextRef(node.getContext('2d'), this.state) : null}
                 onClick={this.props.onClick}
             />
