@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
 import colors, { brickColors } from './colors';
+import { FaCaretLeft, FaCaretUp, FaCaretDown, FaCaretRight } from 'react-icons/fa';
 
 const makeGrid = (rows, cols) => (grid => ({
     elements: () => grid,
@@ -146,7 +147,8 @@ class Canvas extends Component {
             height: '60px',
             borderRadius: '6px',
             color: colors.background,
-            fontSize: '30px'
+            fontSize: '40px',
+            display: 'flex'
         };
 
         return (
@@ -159,10 +161,18 @@ class Canvas extends Component {
                     </div>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', margin: 'auto 0', padding: '20px 0' }}>
-                    <button onClick={() => this.player.moveLeft()} style={button}>{'🡄'}</button>
-                    <button onClick={() => this.player.shuttle()} style={button}>{'🡅'}</button>
-                    <button onClick={() => this.player.moveDown()} style={button}>{'🡇'}</button>
-                    <button onClick={() => this.player.moveRight()} style={button}>{'🡆'}</button>
+                    <button onClick={() => this.player.moveLeft()} style={button}>
+                        <FaCaretLeft style={{ margin: 'auto' }} />
+                    </button>
+                    <button onClick={() => this.player.shuttle()} style={button}>
+                        <FaCaretUp style={{ margin: 'auto' }} />
+                    </button>
+                    <button onClick={() => this.player.moveDown()} style={button}>
+                        <FaCaretDown style={{ margin: 'auto' }} />
+                    </button>
+                    <button onClick={() => this.player.moveRight()} style={button}>
+                        <FaCaretRight style={{ margin: 'auto' }} />
+                    </button>
                 </div>
             </React.Fragment>
         );
