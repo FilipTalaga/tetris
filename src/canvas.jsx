@@ -8,7 +8,7 @@ const makeGrid = (rows, cols) => (grid => ({
     rows: () => rows,
     cols: () => cols,
     get: (row, col) => grid[row * cols + col],
-    set: (row, col, value) => grid[row * cols + col] = value
+    set: (row, col, value) => row >= 0 && col >= 0 ? grid[row * cols + col] = value : 0
 }))(Array(rows * cols).fill(0));
 
 const makeDrawer = (ctx, ctxState, grid) => ({
@@ -35,6 +35,7 @@ const makePlayer = (grid, shape) => ({
         if (isCollision || isEnd) {
             shape.cords.forEach(x => grid.set(x.row, x.col, shape.color));
             shape = generateShape();
+            shape.cords.forEach(x => grid.set(x.row, x.col, shape.color));
         } else {
             shape.cords.forEach(x => grid.set(++x.row, x.col, shape.color));
         }
@@ -66,30 +67,30 @@ const makePlayer = (grid, shape) => ({
 
 const generateShape = () => {
     const shapes = [[
-        { row: 0, col: 3 },
-        { row: 0, col: 4 },
-        { row: 0, col: 5 },
-        { row: 1, col: 5 }
+        { row: -1, col: 3 },
+        { row: -1, col: 4 },
+        { row: -1, col: 5 },
+        { row: 0, col: 5 }
     ], [
+        { row: -1, col: 4 },
+        { row: -1, col: 5 },
         { row: 0, col: 4 },
-        { row: 0, col: 5 },
-        { row: 1, col: 4 },
-        { row: 1, col: 5 }
+        { row: 0, col: 5 }
     ], [
-        { row: 0, col: 5 },
-        { row: 1, col: 4 },
-        { row: 1, col: 5 },
-        { row: 2, col: 4 }
+        { row: -2, col: 5 },
+        { row: -1, col: 4 },
+        { row: -1, col: 5 },
+        { row: 0, col: 4 }
     ], [
-        { row: 0, col: 4 },
-        { row: 1, col: 4 },
-        { row: 2, col: 4 },
-        { row: 3, col: 4 }
+        { row: -3, col: 4 },
+        { row: -2, col: 4 },
+        { row: -1, col: 4 },
+        { row: 0, col: 4 }
     ], [
-        { row: 0, col: 4 },
-        { row: 1, col: 4 },
-        { row: 1, col: 5 },
-        { row: 2, col: 4 }
+        { row: -2, col: 4 },
+        { row: -1, col: 4 },
+        { row: -1, col: 5 },
+        { row: 0, col: 4 }
     ]];
 
     return {
@@ -124,10 +125,13 @@ class Canvas extends Component {
 
     draw() {
         this.drawer.clearCtx();
+
         this.drawer.colorCtx(colors.background);
         this.drawer.drawBackground();
+
         this.drawer.colorCtx(colors.net);
-        this.drawer.drawNet(this.grid.cols(), this.grid.rows());
+        this.drawer.drawNet();
+
         this.drawer.colorCtx(colors.pink);
         this.grid.elements().forEach((square, index) => {
             if (square) {
