@@ -57,6 +57,9 @@ const makePlayer = (grid, shape) => ({
         } else {
             shape.cords.forEach(x => grid.set(x.row, ++x.col, shape.color));
         }
+    },
+    shuttle: () => {
+
     }
 });
 
@@ -141,19 +144,25 @@ class Canvas extends Component {
             outline: 'none',
             width: '60px',
             height: '60px',
-            borderRadius: '14px',
+            borderRadius: '6px',
             color: colors.background,
-            fontWeight: 900,
             fontSize: '30px'
         };
 
         return (
             <React.Fragment>
-                <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
-                <div style={{ display: 'flex', justifyContent: 'space-evenly', margin: 'auto 0' }}>
-                    <button onClick={() => this.player.moveLeft()} style={button}>{'<'}</button>
-                    <button onClick={() => this.player.moveDown()} style={button}>{'v'}</button>
-                    <button onClick={() => this.player.moveRight()} style={button}>{'>'}</button>
+                <div style={{ display: 'flex' }}>
+                    <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
+                    <div style={{ margin: '0 auto', padding: '20px' }}>
+                        <p>Score</p>
+                        <p>2341</p>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-evenly', margin: 'auto 0', padding: '20px 0' }}>
+                    <button onClick={() => this.player.moveLeft()} style={button}>{'🡄'}</button>
+                    <button onClick={() => this.player.shuttle()} style={button}>{'🡅'}</button>
+                    <button onClick={() => this.player.moveDown()} style={button}>{'🡇'}</button>
+                    <button onClick={() => this.player.moveRight()} style={button}>{'🡆'}</button>
                 </div>
             </React.Fragment>
         );
