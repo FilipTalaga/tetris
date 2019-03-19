@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
 import colors, { brickColors } from './colors';
-import { FaCaretLeft, FaCaretUp, FaCaretDown, FaCaretRight } from 'react-icons/fa';
+import { FaCaretLeft, FaUndoAlt, FaCaretDown, FaCaretRight } from 'react-icons/fa';
 
 const makeGrid = (rows, cols) => (grid => ({
     elements: () => grid,
@@ -164,14 +164,14 @@ class Canvas extends Component {
                     <button onClick={() => this.player.moveLeft()} style={button}>
                         <FaCaretLeft style={{ margin: 'auto' }} />
                     </button>
-                    <button onClick={() => this.player.shuttle()} style={button}>
-                        <FaCaretUp style={{ margin: 'auto' }} />
-                    </button>
                     <button onClick={() => this.player.moveDown()} style={button}>
                         <FaCaretDown style={{ margin: 'auto' }} />
                     </button>
                     <button onClick={() => this.player.moveRight()} style={button}>
                         <FaCaretRight style={{ margin: 'auto' }} />
+                    </button>
+                    <button onClick={() => this.player.shuttle()} style={button}>
+                        <FaUndoAlt style={{ margin: 'auto' }} />
                     </button>
                 </div>
             </React.Fragment>

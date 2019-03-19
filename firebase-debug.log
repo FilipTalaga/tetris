@@ -1,0 +1,65 @@
+[debug] [2019-03-19T18:53:20.774Z] ----------------------------------------------------------------------
+[debug] [2019-03-19T18:53:20.777Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\talag\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2019-03-19T18:53:20.777Z] CLI Version:   6.3.1
+[debug] [2019-03-19T18:53:20.777Z] Platform:      win32
+[debug] [2019-03-19T18:53:20.777Z] Node Version:  v8.12.0
+[debug] [2019-03-19T18:53:20.778Z] Time:          Tue Mar 19 2019 19:53:20 GMT+0100 (Środkowoeuropejski czas stand.)
+[debug] [2019-03-19T18:53:20.778Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-03-19T18:53:20.786Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-03-19T18:53:20.787Z] > authorizing via signed-in user
+[debug] [2019-03-19T18:53:20.787Z] [iam] checking project tetris-react for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2019-03-19T18:53:20.789Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-03-19T18:53:20.789Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-03-19T18:53:21.095Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-19T18:53:21.106Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tetris-react:testIamPermissions  
+
+[debug] [2019-03-19T18:53:22.144Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-19T18:53:22.148Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/tetris-react  
+ 
+[debug] [2019-03-19T18:53:22.537Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'tetris-react'...
+[info] 
+[info] i  deploying hosting
+[debug] [2019-03-19T18:53:22.550Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/tetris-react/versions  
+
+[debug] [2019-03-19T18:53:24.323Z] <<< HTTP RESPONSE 200
+[info] i  hosting[tetris-react]: beginning deploy...
+[info] i  hosting[tetris-react]: found 7 files in dist
+[debug] [2019-03-19T18:53:24.333Z] [hosting] hash cache [ZGlzdA] load error: lines is not defined
+[debug] [2019-03-19T18:53:24.469Z] [hosting] hash cache [ZGlzdA] stored for 7 files
+[debug] [2019-03-19T18:53:24.469Z] [hosting][hash queue][FINAL]
+[debug] [2019-03-19T18:53:24.469Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/tetris-react/versions/18e0fd46d6c98edb:populateFiles  
+ <request body omitted>
+[debug] [2019-03-19T18:53:26.037Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-19T18:53:26.043Z] [hosting][populate queue][FINAL]
+[debug] [2019-03-19T18:53:26.043Z] [hosting] uploads queued: 3
+[debug] [2019-03-19T18:53:29.280Z] [hosting][upload queue][FINAL]
+[info] +  hosting[tetris-react]: file upload complete
+[debug] [2019-03-19T18:53:29.286Z] [hosting] deploy completed after 4961ms
+[debug] [2019-03-19T18:53:29.289Z] [
+  {
+    "config": {
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "tetris-react"
+    },
+    "site": "tetris-react",
+    "version": "sites/tetris-react/versions/18e0fd46d6c98edb"
+  }
+]
+[info] i  hosting[tetris-react]: finalizing version...
+[debug] [2019-03-19T18:53:29.294Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/sites/tetris-react/versions/18e0fd46d6c98edb?updateMask=status  
+
+[debug] [2019-03-19T18:53:30.491Z] <<< HTTP RESPONSE 200
+[debug] [2019-03-19T18:53:30.492Z] [hosting] finalized version for tetris-react:
+[info] +  hosting[tetris-react]: version finalized
+[info] i  hosting[tetris-react]: releasing new version...
+[debug] [2019-03-19T18:53:30.495Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/tetris-react/releases?version_name=sites/tetris-react/versions/18e0fd46d6c98edb  
+
