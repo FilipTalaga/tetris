@@ -28,6 +28,10 @@ class Canvas extends Component {
             case 'ArrowRight':
                 this.player.moveRight();
                 break;
+
+            case 'ArrowUp':
+                this.player.rotate();
+                break;
         }
     }
 
@@ -82,7 +86,7 @@ class Canvas extends Component {
                     <button onClick={() => this.player.moveRight()} style={button}>
                         <FaCaretRight style={{ margin: 'auto' }} />
                     </button>
-                    <button onClick={() => this.player.shuttle()} style={button}>
+                    <button onClick={() => this.player.rotate()} style={button}>
                         <FaUndoAlt style={{ margin: 'auto' }} />
                     </button>
                 </div>
