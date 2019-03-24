@@ -32,8 +32,12 @@ class Shape {
         this._shape[this._phase] = value;
     }
 
-    rotate() {
+    rotateRight() {
         this._phase = (this._phase + 1) % 4;
+    }
+
+    rotateLeft() {
+        this._phase = (this._phase - 1 < 0 ? 3 : this._phase - 1) % 4;
     }
 }
 

@@ -1,56 +1,4 @@
-import { brickColors } from '../colors';
 import Shape from './shape';
-
-const shape = new Shape();
-console.log(shape.color);
-console.log(shape.values);
-shape.rotate();
-console.log(shape.values);
-shape.rotate();
-console.log(shape.values);
-shape.rotate();
-console.log(shape.values);
-shape.rotate();
-console.log(shape.values);
-shape.rotate();
-console.log(shape.values);
-shape.rotate();
-console.log(shape.values);
-
-function generateShape() {
-    const shapes = [[
-        { row: -1, col: 3 },
-        { row: -1, col: 4 },
-        { row: -1, col: 5 },
-        { row: 0, col: 5 }
-    ], [
-        { row: -1, col: 4 },
-        { row: -1, col: 5 },
-        { row: 0, col: 4 },
-        { row: 0, col: 5 }
-    ], [
-        { row: -2, col: 5 },
-        { row: -1, col: 4 },
-        { row: -1, col: 5 },
-        { row: 0, col: 4 }
-    ], [
-        { row: -3, col: 4 },
-        { row: -2, col: 4 },
-        { row: -1, col: 4 },
-        { row: 0, col: 4 }
-    ], [
-        { row: -2, col: 4 },
-        { row: -1, col: 4 },
-        { row: -1, col: 5 },
-        { row: 0, col: 4 }
-    ]];
-
-    return {
-        color: Math.floor(Math.random() * brickColors.length) + 1,
-        cords: shapes[Math.floor(Math.random() * shapes.length)],
-        phase: 0
-    };
-}
 
 const makePlayer = grid => (shape => ({
     moveDown: () => {
@@ -61,14 +9,34 @@ const makePlayer = grid => (shape => ({
                 grid.set(y, x, 0);
             }
         });
+
         shape.posY++;
+
+        const cannotMove = shape.values.some((value, index) => {
+            if (value) {
+                const x = index % 4 + shape.posX;
+                const y = Math.floor(index / 4) + shape.posY;
+                const isEdge = x < 0 || x >= grid.cols() || y >= grid.rows();
+                const isBrick = grid.get(y, x);
+                return isEdge || isBrick;
+            }
+        });
+
+        if (cannotMove) {
+            shape.posY--;
+        }
+
         shape.values.forEach((value, index) => {
             if (value) {
                 const x = index % 4 + shape.posX;
                 const y = Math.floor(index / 4) + shape.posY;
-                grid.set(y, x, 1);
+                grid.set(y, x, shape.color);
             }
         });
+
+        if (cannotMove) {
+            shape = new Shape();
+        }
     },
     moveLeft: () => {
         shape.values.forEach((value, index) => {
@@ -78,12 +46,28 @@ const makePlayer = grid => (shape => ({
                 grid.set(y, x, 0);
             }
         });
+
         shape.posX--;
+
+        const cannotMove = shape.values.some((value, index) => {
+            if (value) {
+                const x = index % 4 + shape.posX;
+                const y = Math.floor(index / 4) + shape.posY;
+                const isEdge = x < 0 || x >= grid.cols() || y >= grid.rows();
+                const isBrick = grid.get(y, x);
+                return isEdge || isBrick;
+            }
+        });
+
+        if (cannotMove) {
+            shape.posX++;
+        }
+
         shape.values.forEach((value, index) => {
             if (value) {
                 const x = index % 4 + shape.posX;
                 const y = Math.floor(index / 4) + shape.posY;
-                grid.set(y, x, 1);
+                grid.set(y, x, shape.color);
             }
         });
 
@@ -96,12 +80,28 @@ const makePlayer = grid => (shape => ({
                 grid.set(y, x, 0);
             }
         });
+
         shape.posX++;
+
+        const cannotMove = shape.values.some((value, index) => {
+            if (value) {
+                const x = index % 4 + shape.posX;
+                const y = Math.floor(index / 4) + shape.posY;
+                const isEdge = x < 0 || x >= grid.cols() || y >= grid.rows();
+                const isBrick = grid.get(y, x);
+                return isEdge || isBrick;
+            }
+        });
+
+        if (cannotMove) {
+            shape.posX--;
+        }
+
         shape.values.forEach((value, index) => {
             if (value) {
                 const x = index % 4 + shape.posX;
                 const y = Math.floor(index / 4) + shape.posY;
-                grid.set(y, x, 1);
+                grid.set(y, x, shape.color);
             }
         });
 
@@ -114,12 +114,28 @@ const makePlayer = grid => (shape => ({
                 grid.set(y, x, 0);
             }
         });
-        shape.rotate();
+
+        shape.rotateLeft();
+
+        const cannotMove = shape.values.some((value, index) => {
+            if (value) {
+                const x = index % 4 + shape.posX;
+                const y = Math.floor(index / 4) + shape.posY;
+                const isEdge = x < 0 || x >= grid.cols() || y >= grid.rows();
+                const isBrick = grid.get(y, x);
+                return isEdge || isBrick;
+            }
+        });
+
+        if (cannotMove) {
+            shape.rotateRight();
+        }
+
         shape.values.forEach((value, index) => {
             if (value) {
                 const x = index % 4 + shape.posX;
                 const y = Math.floor(index / 4) + shape.posY;
-                grid.set(y, x, 1);
+                grid.set(y, x, shape.color);
             }
         });
     }
