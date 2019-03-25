@@ -6,10 +6,12 @@ class Animation extends Component {
         super(props);
         this.child = React.createRef();
         this.lastRender = 0;
+        this.speedup = false;
     }
 
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
+        document.addEventListener('keyup', this.handleKeyUp.bind(this));
         this.rAF = requestAnimationFrame(this.loop.bind(this));
     }
 
@@ -18,12 +20,21 @@ class Animation extends Component {
         cancelAnimationFrame(this.rAF);
     }
 
+    handleKeyUp(e) {
+        if (e.key === 'ArrowDown') {
+            this.speedup = false;
+        }
+    }
+
     handleKeyDown(e) {
+        if (e.key === 'ArrowDown') {
+            this.speedup = true;
+        }
         this.child.current.move(e.key);
     }
 
     loop(timestamp) {
-        if (timestamp - this.lastRender >= 200) { // update every 200 ms
+        if (timestamp - this.lastRender >= (this.speedup ? 50 : 400)) { // update every 400 ms
             this.updateLogic();
             this.lastRender = timestamp;
         }
@@ -32,7 +43,7 @@ class Animation extends Component {
     }
 
     updateLogic() {
-        this.child.current.move('ArrowDown');
+        this.child.current.moveDown();
     }
 
     updateGraphics() {

@@ -15,12 +15,12 @@ class Canvas extends Component {
         this.player = makePlayer(this.grid);
     }
 
+    moveDown() {
+        this.player.moveDown();
+    }
+
     move(key) {
         switch (key) {
-            case 'ArrowDown':
-                this.player.moveDown();
-                break;
-
             case 'ArrowLeft':
                 this.player.moveLeft();
                 break;
