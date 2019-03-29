@@ -1,42 +1,39 @@
-import Shape from './shape';
+import makeShape from './shape';
 
-const makePlayer = grid => (shape => ({
-    moveDown: () => {
-        shape.setShapeValueOnGrid(grid, 0);
-        shape.posY++;
-        const foundCollision = shape.checkCollision(grid);
+const moves = { left: 0, right: 1, down: 2, rotate: 3 };
+
+const makePlayer = grid => {
+    let shape = makeShape(grid);
+
+    const tryMove = moveName => {
+        shape.setShapeValueOnGrid(false);
+
+        if (moveName === moves.left) shape.moveLeft();
+        if (moveName === moves.right) shape.moveRight();
+        if (moveName === moves.down) shape.moveDown();
+        if (moveName === moves.rotate) shape.rotateRight();
+
+        const foundCollision = shape.checkCollision();
         if (foundCollision) {
-            shape.posY--;
+            if (moveName === moves.left) shape.moveRight();
+            if (moveName === moves.right) shape.moveLeft();
+            if (moveName === moves.down) shape.moveUp();
+            if (moveName === moves.rotate) shape.rotateLeft();
         }
-        shape.setShapeValueOnGrid(grid, shape.color);
-        if (foundCollision) {
-            shape = new Shape();
+
+        shape.setShapeValueOnGrid(true);
+
+        if (moveName == moves.down && foundCollision) {
+            shape = makeShape(grid);
         }
-    },
-    moveLeft: () => {
-        shape.setShapeValueOnGrid(grid, 0);
-        shape.posX--;
-        if (shape.checkCollision(grid)) {
-            shape.posX++;
-        }
-        shape.setShapeValueOnGrid(grid, shape.color);
-    },
-    moveRight: () => {
-        shape.setShapeValueOnGrid(grid, 0);
-        shape.posX++;
-        if (shape.checkCollision(grid)) {
-            shape.posX--;
-        }
-        shape.setShapeValueOnGrid(grid, shape.color);
-    },
-    rotate: () => {
-        shape.setShapeValueOnGrid(grid, 0);
-        shape.rotateRight();
-        if (shape.checkCollision(grid)) {
-            shape.rotateLeft();
-        }
-        shape.setShapeValueOnGrid(grid, shape.color);
-    }
-}))(new Shape());
+    };
+
+    return {
+        moveDown: () => tryMove(moves.down),
+        moveLeft: () => tryMove(moves.left),
+        moveRight: () => tryMove(moves.right),
+        rotate: () => tryMove(moves.rotate)
+    };
+};
 
 export default makePlayer;
