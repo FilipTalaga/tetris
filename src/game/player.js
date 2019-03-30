@@ -2,10 +2,10 @@ import makeShape from './shape';
 
 const moves = { left: 0, right: 1, down: 2, rotate: 3 };
 
-const makePlayer = grid => {
+function makePlayer(grid) {
     let shape = makeShape(grid);
 
-    const tryMove = moveName => {
+    function tryMove(moveName) {
         shape.setShapeValueOnGrid(false);
 
         if (moveName === moves.left) shape.moveLeft();
@@ -24,9 +24,20 @@ const makePlayer = grid => {
         shape.setShapeValueOnGrid(true);
 
         if (moveName == moves.down && foundCollision) {
+            removeCompleteLines();
             shape = makeShape(grid);
         }
-    };
+    }
+
+    function removeCompleteLines() {
+        for (let row = 0; row < grid.rows(); row++) {
+            if (grid.isRowComplete(row)) {
+                for (let col = 0; col < grid.cols(); col++) {
+                    grid.set(row, col, 0);
+                }
+            }
+        }
+    }
 
     return {
         moveDown: () => tryMove(moves.down),
@@ -34,6 +45,6 @@ const makePlayer = grid => {
         moveRight: () => tryMove(moves.right),
         rotate: () => tryMove(moves.rotate)
     };
-};
+}
 
 export default makePlayer;
