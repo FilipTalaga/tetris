@@ -32,9 +32,7 @@ function makePlayer(grid) {
     function removeCompleteLines() {
         for (let row = 0; row < grid.rows(); row++) {
             if (grid.isRowComplete(row)) {
-                for (let col = 0; col < grid.cols(); col++) {
-                    grid.set(row, col, 0);
-                }
+                grid.removeRow(row);
             }
         }
     }
