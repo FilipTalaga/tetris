@@ -19,20 +19,16 @@ class Canvas extends Component {
         this.player.moveDown();
     }
 
-    move(key) {
-        switch (key) {
-            case 'ArrowLeft':
-                this.player.moveLeft();
-                break;
+    moveLeft() {
+        this.player.moveLeft();
+    }
 
-            case 'ArrowRight':
-                this.player.moveRight();
-                break;
+    moveRight() {
+        this.player.moveRight();
+    }
 
-            case 'ArrowUp':
-                this.player.rotate();
-                break;
-        }
+    rotate() {
+        this.player.rotate();
     }
 
     draw() {
