@@ -5,10 +5,10 @@ class Animation extends Component {
     constructor(props) {
         super(props);
         this.child = React.createRef();
-        this.lastRender = 0;
-        this.lastRenderLeft = 0;
-        this.lastRenderRight = 0;
-        this.lastRenderRotate = 0;
+
+        this.lastTimestampDown = 0;
+        this.lastTimestampSide = 0;
+        this.lastTimestampRotate = 0;
 
         this.speedup = false;
         this.left = false;
@@ -58,24 +58,24 @@ class Animation extends Component {
     }
 
     loop(timestamp) {
-        if (timestamp - this.lastRender >= (this.speedup ? 50 : 400)) { // update every 400 ms
+        if (timestamp - this.lastTimestampDown >= (this.speedup ? 50 : 400)) {
             this.child.current.moveDown();
-            this.lastRender = timestamp;
+            this.lastTimestampDown = timestamp;
         }
 
-        if (this.left && timestamp - this.lastRenderLeft >= 100) {
-            this.child.current.moveLeft();
-            this.lastRenderLeft = timestamp;
-        }
-
-        if (this.right && timestamp - this.lastRenderRight >= 100) {
+        if (this.right && timestamp - this.lastTimestampSide >= 100) {
             this.child.current.moveRight();
-            this.lastRenderRight = timestamp;
+            this.lastTimestampSide = timestamp;
         }
 
-        if (this.up && timestamp - this.lastRenderRotate >= 200) {
+        if (this.left && timestamp - this.lastTimestampSide >= 100) {
+            this.child.current.moveLeft();
+            this.lastTimestampSide = timestamp;
+        }
+
+        if (this.up && timestamp - this.lastTimestampRotate >= 200) {
             this.child.current.rotate();
-            this.lastRenderRotate = timestamp;
+            this.lastTimestampRotate = timestamp;
         }
 
         this.updateGraphics();
