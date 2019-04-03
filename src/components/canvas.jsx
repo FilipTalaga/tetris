@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
-import colors, { brickColors } from './colors';
+import colors, { brickColors } from '../consts/colors';
 import { FaCaretLeft, FaUndoAlt, FaCaretDown, FaCaretRight } from 'react-icons/fa';
-import makePlayer from './game/player';
-import makeGrid from './game/grid';
-import makeDrawer from './game/drawer';
+import makePlayer from '../game/player';
+import makeGrid from '../game/grid';
+import makeDrawer from '../game/drawer';
 
 
 class Canvas extends Component {

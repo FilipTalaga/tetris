@@ -1,13 +1,13 @@
 const colors = {
     background: '#303030',
     net: '#2B2B2B',
-    pink: '#E24761',
-    purple: '#B447E2',
-    blue: '#4756E2',
-    cyan: '#47E2E2',
-    green: '#47E251',
-    yellow: '#E2D347',
-    orange: '#E27747'
+    pink: '#FF002B',
+    purple: '#B300FF',
+    blue: '#0019FF',
+    cyan: '#00FFFF',
+    green: '#00FF10',
+    yellow: '#FFE600',
+    orange: '#FF4F00'
 };
 
 export default colors;

@@ -1,12 +1,13 @@
-import shapes from './shapes';
-import { brickColors } from '../colors';
+import shapes from '../consts/shapes';
+import { getRandomInt } from '../utils';
 
 const makeShape = grid => {
-    const color = Math.floor(Math.random() * brickColors.length) + 1;
-    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const randomShape = getRandomInt(0, shapes.length - 1);
+    const color = randomShape + 1;
+    const shape = shapes[randomShape];
 
     let posX = 3;
-    let posY = -4;
+    let posY = -2;
     let phase = 0;
 
     return {
@@ -14,8 +15,8 @@ const makeShape = grid => {
         moveRight: () => posX++,
         moveUp: () => posY--,
         moveDown: () => posY++,
-        rotateRight: () => phase = (phase + 1) % 4,
-        rotateLeft: () => phase = (phase - 1 < 0 ? 3 : phase - 1) % 4,
+        rotateRight: () => phase = (phase + 1) % shape.length,
+        rotateLeft: () => phase = (phase - 1 < 0 ? shape.length - 1 : phase - 1) % shape.length,
         checkCollision: () => shape[phase].some((value, index) => {
             if (value) {
                 const x = index % 4 + posX;
