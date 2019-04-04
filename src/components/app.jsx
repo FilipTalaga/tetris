@@ -1,6 +1,6 @@
 import React from 'react';
-import Animation from './animation';
+import Game from './game';
 
-const App = () => <Animation />;
+const App = () => <Game />;
 
 export default App;
