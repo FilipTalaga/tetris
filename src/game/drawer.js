@@ -1,3 +1,5 @@
+import colors from '../consts/colors';
+
 const makeDrawer = (ctx, ctxState, grid) => {
     const { width, height, gap, size } = ctxState;
     const brickColors = {
@@ -36,6 +38,7 @@ const makeDrawer = (ctx, ctxState, grid) => {
             ctx.fill();
         },
         drawNet: () => {
+            ctx.fillStyle = colors.net;
             for (let row = 0; row <= grid.rows(); row++) {
                 ctx.fillRect(0, row * (size + gap), width, gap);
             }

@@ -1,6 +1,6 @@
 const colors = {
     background: '#141414',
-    net: '#101010'
+    net: 'rgba(4, 7, 29, 0.1)'
 };
 
 export default colors;

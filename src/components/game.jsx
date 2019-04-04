@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
-import colors from '../consts/colors';
 import makePlayer from '../game/player';
 import makeGrid from '../game/grid';
 import makeDrawer from '../game/drawer';
@@ -78,13 +77,7 @@ class Game extends Component {
 
     draw() {
         this.drawer.clearCtx();
-
-        //this.drawer.colorCtx(colors.background);
-        //this.drawer.drawBackground();
-
-        //this.drawer.colorCtx(colors.net);
-        //this.drawer.drawNet();
-
+        this.drawer.drawNet();
         this.grid.elements().forEach((square, index) => {
             if (square) {
                 const row = Math.floor(index / this.grid.cols());
