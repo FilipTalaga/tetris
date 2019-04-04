@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PureCanvas from './pure-canvas';
-import colors, { brickColors } from '../consts/colors';
+import colors from '../consts/colors';
 import { FaCaretLeft, FaUndoAlt, FaCaretDown, FaCaretRight } from 'react-icons/fa';
 import makePlayer from '../game/player';
 import makeGrid from '../game/grid';
@@ -40,13 +40,11 @@ class Canvas extends Component {
         this.drawer.colorCtx(colors.net);
         this.drawer.drawNet();
 
-        this.drawer.colorCtx(colors.pink);
         this.grid.elements().forEach((square, index) => {
             if (square) {
-                this.drawer.colorCtx(brickColors[square - 1]);
                 const row = Math.floor(index / this.grid.cols());
                 const col = index % this.grid.cols();
-                this.drawer.drawRect(row, col);
+                this.drawer.drawRect(row, col, square - 1);
             }
         });
     }
