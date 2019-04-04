@@ -7,7 +7,16 @@ import makeDrawer from '../game/drawer';
 class Game extends Component {
     constructor(props) {
         super(props);
+        this.state = { score: 0 };
+    }
 
+    onContextUpdate = (ctx, ctxState) => {
+        this.ctx = ctx;
+        this.ctxState = ctxState;
+        this.resetGame();
+    }
+
+    resetGame() {
         this.lastTimestampDown = 0;
         this.lastTimestampSide = 0;
         this.lastTimestampRotate = 0;
@@ -17,18 +26,20 @@ class Game extends Component {
         this.right = false;
         this.up = false;
 
-        this.state = { score: 0 };
-    }
+        this.setState({ score: 0 });
 
-    onContextUpdate = (ctx, ctxState) => {
-        this.ctx = ctx;
         this.grid = makeGrid(20, 10);
-        this.drawer = makeDrawer(this.ctx, ctxState, this.grid);
-        this.player = makePlayer(this.grid, this.scoreOnUpdate.bind(this));
+        this.drawer = makeDrawer(this.ctx, this.ctxState, this.grid);
+        this.player = makePlayer(this.grid, this.scoreOnUpdate.bind(this), this.onGameOver.bind(this));
     }
 
     scoreOnUpdate(value) {
         this.setState({ score: this.state.score + value });
+    }
+
+    onGameOver() {
+        alert('GAME OVER');
+        this.resetGame();
     }
 
     componentDidMount() {
@@ -60,9 +71,6 @@ class Game extends Component {
         if (timestamp - this.lastTimestampDown >= (this.speedup ? 50 : 400)) {
             this.player.moveDown();
             this.lastTimestampDown = timestamp;
-            if (this.speedup) {
-                this.scoreOnUpdate(1);
-            }
         }
 
         if (this.right && timestamp - this.lastTimestampSide >= 100) {
