@@ -16,13 +16,19 @@ class Game extends Component {
         this.left = false;
         this.right = false;
         this.up = false;
+
+        this.state = { score: 0 };
     }
 
     onContextUpdate = (ctx, ctxState) => {
         this.ctx = ctx;
         this.grid = makeGrid(20, 10);
         this.drawer = makeDrawer(this.ctx, ctxState, this.grid);
-        this.player = makePlayer(this.grid);
+        this.player = makePlayer(this.grid, this.scoreOnUpdate.bind(this));
+    }
+
+    scoreOnUpdate(value) {
+        this.setState({ score: this.state.score + value });
     }
 
     componentDidMount() {
@@ -54,6 +60,9 @@ class Game extends Component {
         if (timestamp - this.lastTimestampDown >= (this.speedup ? 50 : 400)) {
             this.player.moveDown();
             this.lastTimestampDown = timestamp;
+            if (this.speedup) {
+                this.scoreOnUpdate(1);
+            }
         }
 
         if (this.right && timestamp - this.lastTimestampSide >= 100) {
@@ -88,9 +97,14 @@ class Game extends Component {
     }
 
     render = () =>
-        <div style={{ margin: 'auto' }}>
-            <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
-        </div>;
+        <React.Fragment>
+            <h2 style={{ margin: 'auto auto 0' }}>
+                SCORE: {this.state.score}
+            </h2>
+            <div style={{ margin: 'auto' }}>
+                <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
+            </div>
+        </React.Fragment>;
 }
 
 export default Game;

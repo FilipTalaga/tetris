@@ -2,7 +2,7 @@ import makeShape from './shape';
 
 const moves = { left: 0, right: 1, down: 2, rotate: 3 };
 
-function makePlayer(grid) {
+function makePlayer(grid, updateScore) {
     let shape = makeShape(grid);
 
     function tryMove(moveName) {
@@ -30,10 +30,15 @@ function makePlayer(grid) {
     }
 
     function removeCompleteLines() {
+        let localScore = 0;
         for (let row = 0; row < grid.rows(); row++) {
             if (grid.isRowComplete(row)) {
                 grid.removeRow(row);
+                localScore += 80;
             }
+        }
+        if (localScore > 0) {
+            updateScore(localScore);
         }
     }
 
