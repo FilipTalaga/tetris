@@ -3,6 +3,7 @@ import PureCanvas from './pure-canvas';
 import makePlayer from '../game/player';
 import makeGrid from '../game/grid';
 import makeDrawer from '../game/drawer';
+import Hammer from 'hammerjs';
 
 class Game extends Component {
     constructor(props) {
@@ -26,6 +27,10 @@ class Game extends Component {
         this.right = false;
         this.up = false;
 
+        this.panLeft = 0;
+        this.panRight = 0;
+        this.panDown = 0;
+
         this.setState({ score: 0 });
 
         this.grid = makeGrid(20, 10);
@@ -46,11 +51,43 @@ class Game extends Component {
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.handleKeyUp.bind(this));
         this.rAF = requestAnimationFrame(this.loop.bind(this));
+        this.hammertime = new Hammer(document.getElementById('canvas'));
+        this.hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammertime.on('panleft', this.onPanLeft.bind(this));
+        this.hammertime.on('panright', this.onPanRight.bind(this));
+        this.hammertime.on('pandown', this.onPanDown.bind(this));
+        this.hammertime.on('tap', this.player.rotate);
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleKeyDown.bind(this));
         cancelAnimationFrame(this.rAF);
+    }
+
+    onPanLeft() {
+        this.panLeft++;
+        if (this.panLeft >= 10) {
+            this.player.moveLeft();
+            this.panLeft = 0;
+        }
+    }
+
+    onPanRight() {
+        this.panRight++;
+        if (this.panRight >= 10) {
+            this.player.moveRight();
+            this.panRight = 0;
+        }
+    }
+
+
+    onPanDown() {
+        this.panDown++;
+        if (this.panDown >= 5) {
+            this.player.moveDown();
+            this.panDown = 0;
+        }
+
     }
 
     handleKeyUp(e) {
@@ -109,7 +146,7 @@ class Game extends Component {
             <h2 style={{ margin: 'auto auto 0' }}>
                 SCORE: {this.state.score}
             </h2>
-            <div style={{ margin: 'auto' }}>
+            <div id="canvas" style={{ margin: 'auto' }}>
                 <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
             </div>
         </React.Fragment>;
