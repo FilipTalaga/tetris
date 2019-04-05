@@ -10,6 +10,7 @@
         "deploy": "yarn build && firebase deploy"
     },
     "dependencies": {
+        "hammerjs": "^2.0.8",
         "react": "^16.7.0",
         "react-dom": "^16.7.0",
         "react-icons": "^3.5.0"
