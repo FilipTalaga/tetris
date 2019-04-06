@@ -66,7 +66,7 @@ class Game extends Component {
 
     onPanLeft() {
         this.panLeft++;
-        if (this.panLeft >= 10) {
+        if (this.panLeft >= 5) {
             this.player.moveLeft();
             this.panLeft = 0;
         }
@@ -74,16 +74,15 @@ class Game extends Component {
 
     onPanRight() {
         this.panRight++;
-        if (this.panRight >= 10) {
+        if (this.panRight >= 5) {
             this.player.moveRight();
             this.panRight = 0;
         }
     }
 
-
     onPanDown() {
         this.panDown++;
-        if (this.panDown >= 5) {
+        if (this.panDown >= 3) {
             this.player.moveDown();
             this.panDown = 0;
         }
