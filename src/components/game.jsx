@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PureCanvas from './pure-canvas';
+import GameCanvas from './gameCanvas';
 import makePlayer from '../game/player';
 import makeGrid from '../game/grid';
 import makeDrawer from '../game/drawer';
 import Hammer from 'hammerjs';
+import ShapeCanvas from './shapeCanvas';
 
 class Game extends Component {
     constructor(props) {
@@ -11,10 +12,17 @@ class Game extends Component {
         this.state = { score: 0 };
     }
 
-    onContextUpdate = (ctx, ctxState) => {
-        this.ctx = ctx;
-        this.ctxState = ctxState;
+    onGameContextUpdate = (ctx, ctxState) => {
+        this.gameCtx = ctx;
+        this.gameCtxState = ctxState;
         this.resetGame();
+    }
+
+    onShapeContextUpdate = (ctx, ctxState) => {
+        this.shapeCtx = ctx;
+        this.shapeCtxState = ctxState;
+        this.shapeGrid = makeGrid(4, 4);
+        this.shapeDrawer = makeDrawer(this.shapeCtx, this.shapeCtxState, this.shapeGrid);
     }
 
     resetGame() {
@@ -33,9 +41,9 @@ class Game extends Component {
 
         this.setState({ score: 0 });
 
-        this.grid = makeGrid(20, 10);
-        this.drawer = makeDrawer(this.ctx, this.ctxState, this.grid);
-        this.player = makePlayer(this.grid, this.scoreOnUpdate.bind(this), this.onGameOver.bind(this));
+        this.gameGrid = makeGrid(20, 10);
+        this.gameDrawer = makeDrawer(this.gameCtx, this.gameCtxState, this.gameGrid);
+        this.player = makePlayer(this.gameGrid, this.scoreOnUpdate.bind(this), this.onGameOver.bind(this), this.onNextShapeUpdate.bind(this));
     }
 
     scoreOnUpdate(value) {
@@ -45,6 +53,18 @@ class Game extends Component {
     onGameOver() {
         alert('GAME OVER');
         this.resetGame();
+    }
+
+    onNextShapeUpdate(shape) {
+        this.shapeDrawer.clearCtx();
+        this.shapeDrawer.drawNet();
+        shape.shape.forEach((square, index) => {
+            if (square) {
+                const x = index % 4;
+                const y = Math.floor(index / 4);
+                this.shapeDrawer.drawRect(y, x, shape.color);
+            }
+        });
     }
 
     componentDidMount() {
@@ -133,13 +153,13 @@ class Game extends Component {
     }
 
     draw() {
-        this.drawer.clearCtx();
-        this.drawer.drawNet();
-        this.grid.elements().forEach((square, index) => {
+        this.gameDrawer.clearCtx();
+        this.gameDrawer.drawNet();
+        this.gameGrid.elements().forEach((square, index) => {
             if (square) {
-                const row = Math.floor(index / this.grid.cols());
-                const col = index % this.grid.cols();
-                this.drawer.drawRect(row, col, square - 1);
+                const row = Math.floor(index / this.gameGrid.cols());
+                const col = index % this.gameGrid.cols();
+                this.gameDrawer.drawRect(row, col, square - 1);
             }
         });
     }
@@ -149,8 +169,13 @@ class Game extends Component {
             <h2 style={{ margin: 'auto auto 0' }}>
                 SCORE: {this.state.score}
             </h2>
-            <div id="canvas" style={{ margin: 'auto' }}>
-                <PureCanvas contextRef={this.onContextUpdate} onClick={this.onContextClick} />
+            <div id="canvas" style={{ display: 'flex', margin: 'auto 0', justifyContent: 'space-evenly' }}>
+                <div>
+                    <GameCanvas contextRef={this.onGameContextUpdate} />
+                </div>
+                <div>
+                    <ShapeCanvas contextRef={this.onShapeContextUpdate} />
+                </div>
             </div>
         </React.Fragment>;
 }

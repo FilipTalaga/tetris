@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class PureCanvas extends Component {
+class ShapeCanvas extends Component {
     constructor(props) {
         super(props);
-        const height = window.innerHeight - 100;
+        const height = window.innerHeight - 160;
         const size = Math.floor(height / 22.1);
         const gap = Math.floor(height / 221);
 
         this.state = {
             size: size,
             gap: gap,
-            width: 10 * size + 11 * gap,
-            height: 20 * size + 21 * gap,
+            width: 4 * size + 5 * gap,
+            height: 4 * size + 5 * gap,
         };
     }
 
@@ -30,15 +30,13 @@ class PureCanvas extends Component {
                 width={this.state.width}
                 height={this.state.height}
                 ref={node => node ? this.props.contextRef(node.getContext('2d'), this.state) : null}
-                onClick={this.props.onClick}
             />
         );
     }
 }
 
-PureCanvas.propTypes = {
-    onClick: PropTypes.func,
+ShapeCanvas.propTypes = {
     contextRef: PropTypes.func
 };
 
-export default PureCanvas;
+export default ShapeCanvas;

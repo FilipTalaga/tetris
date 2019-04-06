@@ -2,7 +2,7 @@ import makeShape from './shape';
 
 const moves = { left: 0, right: 1, down: 2, rotate: 3 };
 
-function makePlayer(grid, updateScore, emitGameOver) {
+function makePlayer(grid, updateScore, emitGameOver, updateNextShape) {
     let shape = makeShape(grid);
 
     function tryMove(moveName) {
@@ -31,6 +31,7 @@ function makePlayer(grid, updateScore, emitGameOver) {
 
     function spawnNewShape() {
         shape = makeShape(grid);
+        updateNextShape(shape.getFutureShape());
         if (shape.checkCollision()) emitGameOver();
     }
 
