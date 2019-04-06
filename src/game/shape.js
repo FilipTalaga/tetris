@@ -1,8 +1,22 @@
 import shapes from '../consts/shapes';
 import { getRandomInt } from '../utils';
 
+//let lastShape = 0;
+let futureShape = getRandomInt(0, shapes.length - 1);
+let currentShape = futureShape;
+
+function generateNewShape() {
+    currentShape = futureShape;
+    futureShape = getRandomInt(0, shapes.length - 1);
+    if (futureShape === currentShape) {
+        futureShape = getRandomInt(0, shapes.length - 1);
+    }
+    return { current: currentShape, future: futureShape };
+}
+
 const makeShape = grid => {
-    const randomShape = getRandomInt(0, shapes.length - 1);
+    const currentAndFuture = generateNewShape();
+    const randomShape = currentAndFuture.current;
     const color = randomShape + 1;
     const shape = shapes[randomShape];
 
