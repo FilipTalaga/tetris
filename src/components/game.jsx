@@ -56,7 +56,7 @@ class Game extends Component {
         this.hammertime.on('panleft', this.onPanLeft.bind(this));
         this.hammertime.on('panright', this.onPanRight.bind(this));
         this.hammertime.on('pandown', this.onPanDown.bind(this));
-        this.hammertime.on('tap', this.player.rotate);
+        this.hammertime.on('tap', this.onTap.bind(this));
     }
 
     componentWillUnmount() {
@@ -88,6 +88,10 @@ class Game extends Component {
             this.panDown = 0;
         }
 
+    }
+
+    onTap() {
+        this.player.rotate();
     }
 
     handleKeyUp(e) {
