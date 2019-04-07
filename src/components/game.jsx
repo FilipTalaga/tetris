@@ -167,7 +167,6 @@ class Game extends Component {
 
     render() {
         const sqrSize = getSquareSize();
-        console.log(`0 auto ${sqrSize}px`);
 
         return (
             <div style={{ margin: 'auto', display: 'flex', flexDirection: 'column' }}>
