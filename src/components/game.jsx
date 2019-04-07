@@ -15,14 +15,12 @@ class Game extends Component {
     onGameContextUpdate = (ctx, ctxState) => {
         this.gameCtx = ctx;
         this.gameCtxState = ctxState;
-        this.resetGame();
     }
 
     onShapeContextUpdate = (ctx, ctxState) => {
         this.shapeCtx = ctx;
         this.shapeCtxState = ctxState;
-        this.shapeGrid = makeGrid(4, 4);
-        this.shapeDrawer = makeDrawer(this.shapeCtx, this.shapeCtxState, this.shapeGrid);
+        this.resetGame();
     }
 
     resetGame() {
@@ -43,6 +41,8 @@ class Game extends Component {
 
         this.gameGrid = makeGrid(20, 10);
         this.gameDrawer = makeDrawer(this.gameCtx, this.gameCtxState, this.gameGrid);
+        this.shapeGrid = makeGrid(4, 4);
+        this.shapeDrawer = makeDrawer(this.shapeCtx, this.shapeCtxState, this.shapeGrid);
         this.player = makePlayer(this.gameGrid, this.scoreOnUpdate.bind(this), this.onGameOver.bind(this), this.onNextShapeUpdate.bind(this));
     }
 

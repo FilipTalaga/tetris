@@ -4,6 +4,7 @@ const moves = { left: 0, right: 1, down: 2, rotate: 3 };
 
 function makePlayer(grid, updateScore, emitGameOver, updateNextShape) {
     let shape = makeShape(grid);
+    updateNextShape(shape.getFutureShape());
 
     function tryMove(moveName) {
         shape.setShapeValueOnGrid(false);
