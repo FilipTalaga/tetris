@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getSquareSize, getGapSize } from '../utils';
 
 class ShapeCanvas extends Component {
     constructor(props) {
         super(props);
-        const height = window.innerHeight - 160;
-        const size = Math.floor(height / 22.1);
-        const gap = Math.floor(height / 221);
+        const size = getSquareSize();
+        const gap = getGapSize();
 
         this.state = {
             size: size,

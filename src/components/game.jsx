@@ -5,6 +5,7 @@ import makeGrid from '../game/grid';
 import makeDrawer from '../game/drawer';
 import Hammer from 'hammerjs';
 import ShapeCanvas from './shapeCanvas';
+import { getSquareSize } from '../utils';
 
 class Game extends Component {
     constructor(props) {
@@ -164,20 +165,26 @@ class Game extends Component {
         });
     }
 
-    render = () =>
-        <React.Fragment>
-            <h2 style={{ margin: 'auto auto 0' }}>
-                SCORE: {this.state.score}
-            </h2>
-            <div id="canvas" style={{ display: 'flex', margin: 'auto 0', justifyContent: 'space-evenly' }}>
-                <div>
-                    <GameCanvas contextRef={this.onGameContextUpdate} />
-                </div>
-                <div>
-                    <ShapeCanvas contextRef={this.onShapeContextUpdate} />
+    render() {
+        const sqrSize = getSquareSize();
+        console.log(`0 auto ${sqrSize}px`);
+
+        return (
+            <div style={{ margin: 'auto', display: 'flex', flexDirection: 'column' }}>
+                <h2 style={{ margin: `0 auto ${sqrSize}px` }}>
+                    SCORE: {this.state.score}
+                </h2>
+                <div id="canvas" style={{ display: 'flex', margin: '0 auto' }}>
+                    <div>
+                        <GameCanvas contextRef={this.onGameContextUpdate} />
+                    </div>
+                    <div style={{ marginLeft: `${sqrSize}px` }}>
+                        <ShapeCanvas contextRef={this.onShapeContextUpdate} />
+                    </div>
                 </div>
             </div>
-        </React.Fragment>;
+        );
+    }
 }
 
 export default Game;
