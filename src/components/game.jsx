@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import GameCanvas from './gameCanvas';
 import makePlayer from '../game/player';
 import makeGrid from '../game/grid';
 import makeDrawer from '../game/drawer';
 import Hammer from 'hammerjs';
-import ShapeCanvas from './shapeCanvas';
 import { getSquareSize } from '../utils';
+import PureCanvas from './pureCanvas';
 
 class Game extends Component {
     constructor(props) {
@@ -175,10 +174,10 @@ class Game extends Component {
                 </h2>
                 <div id="canvas" style={{ display: 'flex', margin: '0 auto' }}>
                     <div>
-                        <GameCanvas contextRef={this.onGameContextUpdate} />
+                        <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
                     </div>
                     <div style={{ marginLeft: `${sqrSize}px` }}>
-                        <ShapeCanvas contextRef={this.onShapeContextUpdate} />
+                        <PureCanvas cols={4} rows={4} contextRef={this.onShapeContextUpdate} />
                     </div>
                 </div>
             </div>

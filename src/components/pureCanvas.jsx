@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getSquareSize, getGapSize } from '../utils';
 
-class ShapeCanvas extends Component {
+class PureCanvas extends Component {
     constructor(props) {
         super(props);
         const size = getSquareSize();
@@ -11,8 +11,8 @@ class ShapeCanvas extends Component {
         this.state = {
             size: size,
             gap: gap,
-            width: 4 * size + 5 * gap,
-            height: 4 * size + 5 * gap,
+            width: this.props.cols * size + (this.props.cols + 1) * gap,
+            height: this.props.rows * size + (this.props.rows + 1) * gap,
         };
     }
 
@@ -35,8 +35,10 @@ class ShapeCanvas extends Component {
     }
 }
 
-ShapeCanvas.propTypes = {
+PureCanvas.propTypes = {
+    rows: PropTypes.number,
+    cols: PropTypes.number,
     contextRef: PropTypes.func
 };
 
-export default ShapeCanvas;
+export default PureCanvas;
