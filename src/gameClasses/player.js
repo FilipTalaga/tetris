@@ -1,5 +1,6 @@
-import shapes from '../consts/shapes';
 import { getRandomInt } from '../utils';
+import makeShape from './shape';
+import shapes from '../consts/shapes';
 
 const moves = { left: 0, right: 1, down: 2, rotate: 3 };
 
@@ -15,12 +16,12 @@ function generateNewShape() {
     return { current: currentShape, next: futureShape };
 }
 
-function setShapeValueOnGrid(grid, shape, color, posX, posY, value) {
-    shape.forEach((square, index) => {
+function setShapeValueOnGrid(grid, shape, value, posX = 0, posY = 0) {
+    shape.elements().forEach((square, index) => {
         if (square) {
             const x = index % 4 + posX;
             const y = Math.floor(index / 4) + posY;
-            grid.set(y, x, value ? color : 0);
+            grid.set(y, x, value ? shape.color : 0);
         }
     });
 }
@@ -28,26 +29,22 @@ function setShapeValueOnGrid(grid, shape, color, posX, posY, value) {
 function makePlayer(gameGrid, shapeGrid, updateScore, onGameOver) {
     let generatedShapes = generateNewShape();
 
-    let color = generatedShapes.current + 1;
-    let shape = shapes[generatedShapes.current];
-
-    let nextcolor = generatedShapes.next + 1;
-    let nextShape = shapes[generatedShapes.next];
-    setShapeValueOnGrid(shapeGrid, nextShape[0], nextcolor, 0, 0, true);
+    let shape = makeShape(generatedShapes.current);
+    let nextShape = makeShape(generatedShapes.next);
+    setShapeValueOnGrid(shapeGrid, nextShape, true);
 
     let posX = 3;
     let posY = -2;
-    let phase = 0;
 
     function moveLeft() { posX--; }
     function moveRight() { posX++; }
     function moveUp() { posY--; }
     function moveDown() { posY++; }
-    function rotateRight() { phase = (phase + 1) % shape.length; }
-    function rotateLeft() { phase = (phase - 1 < 0 ? shape.length - 1 : phase - 1) % shape.length; }
+    function rotateRight() { shape.phase = (shape.phase + 1) % shape.length; }
+    function rotateLeft() { shape.phase = (shape.phase - 1 < 0 ? shape.length - 1 : shape.phase - 1) % shape.length; }
 
     function checkCollision() {
-        return shape[phase].some((value, index) => {
+        return shape.elements().some((value, index) => {
             if (value) {
                 const x = index % 4 + posX;
                 const y = Math.floor(index / 4) + posY;
@@ -60,17 +57,14 @@ function makePlayer(gameGrid, shapeGrid, updateScore, onGameOver) {
 
     function spawnNewShape() {
         generatedShapes = generateNewShape();
-        color = generatedShapes.current + 1;
-        shape = shapes[generatedShapes.current];
+        shape = makeShape(generatedShapes.current);
 
-        setShapeValueOnGrid(shapeGrid, nextShape[0], nextcolor, 0, 0, false);
-        nextcolor = generatedShapes.next + 1;
-        nextShape = shapes[generatedShapes.next];
-        setShapeValueOnGrid(shapeGrid, nextShape[0], nextcolor, 0, 0, true);
+        setShapeValueOnGrid(shapeGrid, nextShape, false);
+        nextShape = makeShape(generatedShapes.next);
+        setShapeValueOnGrid(shapeGrid, nextShape, true);
 
         posX = 3;
         posY = -2;
-        phase = 0;
 
         if (checkCollision()) onGameOver();
     }
@@ -91,7 +85,7 @@ function makePlayer(gameGrid, shapeGrid, updateScore, onGameOver) {
     }
 
     function tryMove(moveName) {
-        setShapeValueOnGrid(gameGrid, shape[phase], color, posX, posY, false);
+        setShapeValueOnGrid(gameGrid, shape, false, posX, posY);
 
         if (moveName === moves.left) moveLeft();
         if (moveName === moves.right) moveRight();
@@ -106,7 +100,7 @@ function makePlayer(gameGrid, shapeGrid, updateScore, onGameOver) {
             if (moveName === moves.rotate) rotateLeft();
         }
 
-        setShapeValueOnGrid(gameGrid, shape[phase], color, posX, posY, true);
+        setShapeValueOnGrid(gameGrid, shape, true, posX, posY);
 
         if (moveName == moves.down && foundCollision) {
             removeCompleteLines();
