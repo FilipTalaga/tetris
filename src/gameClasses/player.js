@@ -2,7 +2,7 @@ import makeShape from './shape';
 
 const moves = { left: 0, right: 1, down: 2, rotate: 3 };
 
-function makePlayer(grid, updateScore, emitGameOver, updateNextShape) {
+function makePlayer(grid, updateScore, onGameOver, updateNextShape) {
     let shape = makeShape(grid);
     updateNextShape(shape.getFutureShape());
 
@@ -33,7 +33,7 @@ function makePlayer(grid, updateScore, emitGameOver, updateNextShape) {
     function spawnNewShape() {
         shape = makeShape(grid);
         updateNextShape(shape.getFutureShape());
-        if (shape.checkCollision()) emitGameOver();
+        if (shape.checkCollision()) onGameOver();
     }
 
     function removeCompleteLines() {
