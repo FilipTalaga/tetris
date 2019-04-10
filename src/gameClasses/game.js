@@ -21,21 +21,9 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
     let gameDrawer = makeDrawer(gameCanvas.ctx, gameCanvas.ctxState, gameGrid);
     let shapeGrid = makeGrid(4, 4);
     let shapeDrawer = makeDrawer(shapeCanvas.ctx, shapeCanvas.ctxState, shapeGrid);
-    let player = makePlayer(gameGrid, onScoreUpdate, onGameOver, onNextShapeUpdate);
+    let player = makePlayer(gameGrid, shapeGrid, onScoreUpdate, onGameOver);
 
     let rAF = null;
-
-    function onNextShapeUpdate(shape) {
-        shapeDrawer.clearCtx();
-        shapeDrawer.drawNet();
-        shape.shape.forEach((square, index) => {
-            if (square) {
-                const x = index % 4;
-                const y = Math.floor(index / 4);
-                shapeDrawer.drawRect(y, x, shape.color);
-            }
-        });
-    }
 
     function onPanLeft() {
         panLeft++;
@@ -100,11 +88,11 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
             lastTimestampRotate = timestamp;
         }
 
-        draw();
+        updateGraphics();
         rAF = requestAnimationFrame(loop);
     }
 
-    function draw() {
+    function updateGraphics() {
         gameDrawer.clearCtx();
         gameDrawer.drawNet();
         gameGrid.elements().forEach((square, index) => {
@@ -112,6 +100,15 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
                 const row = Math.floor(index / gameGrid.cols());
                 const col = index % gameGrid.cols();
                 gameDrawer.drawRect(row, col, square - 1);
+            }
+        });
+        shapeDrawer.clearCtx();
+        shapeDrawer.drawNet();
+        shapeGrid.elements().forEach((square, index) => {
+            if (square) {
+                const row = Math.floor(index / shapeGrid.cols());
+                const col = index % shapeGrid.cols();
+                shapeDrawer.drawRect(row, col, square - 1);
             }
         });
     }
@@ -146,7 +143,7 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
             gameDrawer = makeDrawer(gameCanvas.ctx, gameCanvas.ctxState, gameGrid);
             shapeGrid = makeGrid(4, 4);
             shapeDrawer = makeDrawer(shapeCanvas.ctx, shapeCanvas.ctxState, shapeGrid);
-            player = makePlayer(gameGrid, onScoreUpdate, onGameOver, onNextShapeUpdate);
+            player = makePlayer(gameGrid, shapeGrid, onScoreUpdate, onGameOver);
         }
     };
 };
