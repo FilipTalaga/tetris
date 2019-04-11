@@ -59,10 +59,10 @@ class Game extends Component {
 
         return (
             <React.Fragment>
-                <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.8)' }}>
+                <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.9)' }}>
                     <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
                 </div>
-                <div style={{ flex: 1, display: 'flex' }}>
+                <div style={{ flex: 1, display: 'flex', background: 'rgba(0, 0, 0, 0.7)' }}>
                     <h1 style={{ margin: 'auto', letterSpacing: '.3rem' }}>
                         SCORE: {this.state.score}
                     </h1>
@@ -70,7 +70,7 @@ class Game extends Component {
                 <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: canvasMargin }}>
                     <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
                     <div style={{ marginLeft: canvasMargin }}>
-                        <div style={{ height: (size * 2 + gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.8' }}>
+                        <div style={{ height: (size * 2 + gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
                             <h2 style={{ margin: 'auto' }}>NEXT</h2>
                         </div>
                         <PureCanvas cols={4} rows={4} contextRef={this.onShapeContextUpdate} />

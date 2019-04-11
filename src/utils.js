@@ -19,15 +19,15 @@ export function getRandomInt(min, max) {
  */
 export const getSquareSize = () => {
     const size = Math.floor((window.innerWidth - 19 * getGapSize()) / 14);
-    const allowedHeight = size * 20 + window.innerHeight * 0.2 + getGapSize();
+    const allowedHeight = size * 20 + window.innerHeight * 0.25 + getGapSize();
     return allowedHeight > window.innerHeight
-        ? Math.floor((window.innerHeight * 0.8 - getGapSize()) / 20)
+        ? Math.floor((window.innerHeight * 0.75 - getGapSize()) / 20)
         : size;
 };
 
 export const getCanvasMargin = () => {
     let size = Math.floor((window.innerWidth - 19 * getGapSize()) / 14);
-    const allowedHeight = size * 20 + window.innerHeight * 0.2 + getGapSize();
+    const allowedHeight = size * 20 + window.innerHeight * 0.25 + getGapSize();
     return allowedHeight > window.innerHeight
         ? getGapSize()
         : (window.innerWidth - size * 14 - 16 * getGapSize()) / 3;
