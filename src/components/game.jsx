@@ -62,13 +62,15 @@ class Game extends Component {
                 <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.8)' }}>
                     <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
                 </div>
-                <h2 style={{ margin: 'auto' }}>
-                    SCORE: {this.state.score}
-                </h2>
+                <div style={{ flex: 1, display: 'flex' }}>
+                    <h1 style={{ margin: 'auto', letterSpacing: '.3rem' }}>
+                        SCORE: {this.state.score}
+                    </h1>
+                </div>
                 <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: canvasMargin }}>
                     <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
                     <div style={{ marginLeft: canvasMargin }}>
-                        <div style={{ height: (size * 2 + gap * 2), display: 'flex' }}>
+                        <div style={{ height: (size * 2 + gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.8' }}>
                             <h2 style={{ margin: 'auto' }}>NEXT</h2>
                         </div>
                         <PureCanvas cols={4} rows={4} contextRef={this.onShapeContextUpdate} />
