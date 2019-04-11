@@ -7,7 +7,7 @@ class Game extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { score: 0 };
+        this.state = { score: 0, level: 0 };
 
         this.isGameCanvasReady = false;
         this.isShapeCanvasReady = false;
@@ -69,11 +69,18 @@ class Game extends Component {
                 </div>
                 <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: canvasMargin }}>
                     <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
-                    <div style={{ marginLeft: canvasMargin }}>
+                    <div style={{ marginLeft: canvasMargin, display: 'flex', flexDirection: 'column' }}>
                         <div style={{ height: (size * 2 + gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
                             <h2 style={{ margin: 'auto' }}>NEXT</h2>
                         </div>
                         <PureCanvas cols={4} rows={4} contextRef={this.onShapeContextUpdate} />
+                        <div style={{ flex: 1 }}>{/*spacer*/}</div>
+                        <div style={{ height: (size * 2 + gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
+                            <h2 style={{ margin: 'auto' }}>LEVEL</h2>
+                        </div>
+                        <div style={{ height: size * 4 + gap * 4, background: 'rgba(0, 0, 0, 0.5', display: 'flex' }}>
+                            <h1 style={{ margin: 'auto', fontSize: '3rem' }}>{this.state.level}</h1>
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
