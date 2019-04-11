@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import makeGame from '../gameClasses/game';
 import PureCanvas from './pureCanvas';
 import { getSquareSize, getGapSize, getCanvasMargin } from '../utils';
+import IconButton from './icon-button';
 
 class Game extends Component {
     constructor(props) {
@@ -59,8 +60,9 @@ class Game extends Component {
 
         return (
             <React.Fragment>
-                <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.9)' }}>
+                <div style={{ height: 60, display: 'flex', background: 'rgba(0, 0, 0, 0.9)', justifyContent: 'space-between' }}>
                     <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
+                    <IconButton onClick={() => alert('dupa')}></IconButton>
                 </div>
                 <div style={{ flex: 1, display: 'flex', background: 'rgba(0, 0, 0, 0.7)' }}>
                     <h1 style={{ margin: 'auto', letterSpacing: '.3rem' }}>
