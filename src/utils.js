@@ -18,19 +18,40 @@ export function getRandomInt(min, max) {
  * 14 = 10 <game canvas columns> + 4 <next canvas columns>
  */
 export const getSquareSize = () => {
-    const size = Math.floor((window.innerWidth - 19 * getGapSize()) / 14);
-    const allowedHeight = size * 20 + window.innerHeight * 0.25 + getGapSize();
-    return allowedHeight > window.innerHeight
-        ? Math.floor((window.innerHeight * 0.75 - getGapSize()) / 20)
+    const xCols = 14;
+    const yCols = 20;
+    const xGaps = 16;
+    const yGaps = 21;
+    const xMargins = 3;
+    const marginSize = getMarginSize();
+    const gapSize = getGapSize();
+    const upperAreaHeight = window.innerHeight * 0.25;
+    const canvasAreaHeight = window.innerHeight - upperAreaHeight;
+
+    const size = Math.floor((window.innerWidth - xGaps * gapSize - xMargins * marginSize) / xCols);
+    const allowedHeight = marginSize + size * yCols + gapSize * yGaps;
+
+    return allowedHeight > canvasAreaHeight
+        ? Math.floor((canvasAreaHeight - marginSize - yGaps * gapSize) / 20)
         : size;
 };
 
 export const getCanvasMargin = () => {
-    let size = Math.floor((window.innerWidth - 19 * getGapSize()) / 14);
-    const allowedHeight = size * 20 + window.innerHeight * 0.25 + getGapSize();
-    return allowedHeight > window.innerHeight
-        ? getGapSize()
-        : (window.innerWidth - size * 14 - 16 * getGapSize()) / 3;
+    const xCols = 14;
+    const yCols = 20;
+    const xGaps = 16;
+    const yGaps = 21;
+    const xMargins = 3;
+    const marginSize = getMarginSize();
+    const gapSize = getGapSize();
+    const upperAreaHeight = window.innerHeight * 0.25;
+    const canvasAreaHeight = window.innerHeight - upperAreaHeight;
+
+    const size = Math.floor((window.innerWidth - xGaps * gapSize - xMargins * marginSize) / xCols);
+    const allowedHeight = marginSize + size * yCols + gapSize * yGaps;
+    return allowedHeight > canvasAreaHeight
+        ? marginSize
+        : (window.innerWidth - size * xCols - xGaps * gapSize) / 3;
 };
 
 /**
@@ -38,3 +59,9 @@ export const getCanvasMargin = () => {
  * that is calculated based on window height
  */
 export const getGapSize = () => window.innerWidth < 600 ? 2 : 3;
+
+/**
+ * Returns size of gap (distance between grid squares),
+ * that is calculated based on window height
+ */
+export const getMarginSize = () => window.innerWidth < 600 ? 10 : 20;
