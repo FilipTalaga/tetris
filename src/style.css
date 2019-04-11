@@ -16,10 +16,11 @@ html, body {
 }
 
 body {
-    background-image: radial-gradient(circle, #1e2e8f, #04071d);
+    background: #333;
 }
 
 #root {
     height: 100%;
     display: flex;
+    flex-direction: column;
 }
