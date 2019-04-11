@@ -33,7 +33,7 @@ const makeDrawer = (ctx, ctxState, grid) => {
 
             // standard
             ctx.beginPath();
-            ctx.rect(x + gap, y + gap, size - gap * 2, size - gap * 2);
+            ctx.rect(x + gap * 2, y + gap * 2, size - gap * 4, size - gap * 4);
             ctx.fillStyle = `hsl(${hues[color]}, ${saturation}%, ${lightness}%)`;
             ctx.fill();
         },

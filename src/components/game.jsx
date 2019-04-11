@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import makeGame from '../gameClasses/game';
-import { getSquareSize } from '../utils';
 import PureCanvas from './pureCanvas';
+import { getSquareSize, getGapSize, getCanvasMargin } from '../utils';
 
 class Game extends Component {
     constructor(props) {
@@ -53,23 +53,28 @@ class Game extends Component {
     }
 
     render() {
-        const sqrSize = getSquareSize();
+        const canvasMargin = getCanvasMargin();
+        const size = getSquareSize();
+        const gap = getGapSize();
 
         return (
-            <div style={{ margin: 'auto', display: 'flex', flexDirection: 'column' }}>
-                <h2 style={{ margin: `0 auto ${sqrSize}px` }}>
+            <React.Fragment>
+                <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.75)' }}>
+                    <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
+                </div>
+                <h2 style={{ margin: 'auto' }}>
                     SCORE: {this.state.score}
                 </h2>
-                <div id="canvas" style={{ display: 'flex', margin: '0 auto' }}>
-                    <div>
-                        <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
-                    </div>
-                    <div style={{ marginLeft: `${sqrSize}px` }}>
-                        <h2 style={{ textAlign: 'center', margin: 0 }}>NEXT</h2>
+                <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: canvasMargin }}>
+                    <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
+                    <div style={{ marginLeft: canvasMargin }}>
+                        <div style={{ height: (size * 2 + gap * 2), display: 'flex' }}>
+                            <h2 style={{ margin: 'auto' }}>NEXT</h2>
+                        </div>
                         <PureCanvas cols={4} rows={4} contextRef={this.onShapeContextUpdate} />
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

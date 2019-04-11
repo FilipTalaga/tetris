@@ -12,19 +12,29 @@ export function getRandomInt(min, max) {
 }
 
 /**
- * Returns maximum avialable canvas height,
- * that is calculated based on window height
- */
-export const getCanvasMaxHeight = () => window.innerHeight - 190;
-
-/**
  * Returns size of grid square (piece of shape),
  * that is calculated based on window height
+ * 38 = (11 <game canvas gaps> + 5 <next canvas gaps> + 3 <spacer gaps>) * 2 <gap size>
+ * 14 = 10 <game canvas columns> + 4 <next canvas columns>
  */
-export const getSquareSize = () => Math.floor(getCanvasMaxHeight() / 22.1);
+export const getSquareSize = () => {
+    const size = Math.floor((window.innerWidth - 19 * getGapSize()) / 14);
+    const allowedHeight = size * 20 + window.innerHeight * 0.2 + getGapSize();
+    return allowedHeight > window.innerHeight
+        ? Math.floor((window.innerHeight * 0.8 - getGapSize()) / 20)
+        : size;
+};
+
+export const getCanvasMargin = () => {
+    let size = Math.floor((window.innerWidth - 19 * getGapSize()) / 14);
+    const allowedHeight = size * 20 + window.innerHeight * 0.2 + getGapSize();
+    return allowedHeight > window.innerHeight
+        ? getGapSize()
+        : (window.innerWidth - size * 14 - 16 * getGapSize()) / 3;
+};
 
 /**
  * Returns size of gap (distance between grid squares),
  * that is calculated based on window height
  */
-export const getGapSize = () => Math.floor(getCanvasMaxHeight() / 221);
+export const getGapSize = () => window.innerWidth < 600 ? 2 : 3;

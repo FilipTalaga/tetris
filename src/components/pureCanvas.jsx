@@ -8,6 +8,8 @@ class PureCanvas extends Component {
         const size = getSquareSize();
         const gap = getGapSize();
 
+        console.log(size, gap);
+
         this.state = {
             size: size,
             gap: gap,
