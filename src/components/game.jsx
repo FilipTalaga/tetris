@@ -59,7 +59,7 @@ class Game extends Component {
 
         return (
             <React.Fragment>
-                <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.75)' }}>
+                <div style={{ height: 50, display: 'flex', background: 'rgba(0, 0, 0, 0.8)' }}>
                     <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
                 </div>
                 <h2 style={{ margin: 'auto' }}>
