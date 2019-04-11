@@ -28,7 +28,7 @@ class PureCanvas extends Component {
 
     render() {
         return (
-            <canvas
+            <canvas style={{ background: 'rgba(0, 0, 0, 0.50)' }}
                 width={this.state.width}
                 height={this.state.height}
                 ref={node => node ? this.props.contextRef(node.getContext('2d'), this.state) : null}
