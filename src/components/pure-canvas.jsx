@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getSquareSize, getGapSize } from '../utils';
+import { getSquareSize, getGapSize } from '../utils/canvas-calcs';
 
 class PureCanvas extends Component {
     constructor(props) {
