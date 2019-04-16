@@ -5,6 +5,21 @@ import { getSquareSize, getGapSize, getCanvasMargin } from '../utils';
 import IconButton from './icon-button';
 import { FaVolumeOff, FaVolumeUp } from 'react-icons/fa';
 
+const makeAudio = (src, volume, loop = true) => {
+    const sound = new Audio();
+    sound.src = src;
+    sound.loop = loop;
+    sound.volume = volume;
+
+    return {
+        start: () => sound.play(),
+        stop: () => {
+            sound.pause();
+            sound.currentTime = 0;
+        }
+    };
+};
+
 class Game extends Component {
     constructor(props) {
         super(props);
@@ -18,10 +33,7 @@ class Game extends Component {
         this.isGameCanvasReady = false;
         this.isShapeCanvasReady = false;
 
-        this.sound = new Audio();
-        this.sound.src = 'tetris.mp3';
-        this.sound.loop = true;
-        this.sound.volume = 0.5;
+        this.sound = makeAudio('tetris.mp3', 0.5);
     }
 
     onGameContextUpdate = (ctx, ctxState) => {
@@ -63,14 +75,8 @@ class Game extends Component {
     }
 
     onSoundPlay = () => {
-        if (this.state.isMusicPlayed) {
-            this.sound.pause();
-            this.sound.currentTime = 0;
-        } else {
-            this.sound.play();
-        }
-
         this.setState({ isMusicPlayed: !this.state.isMusicPlayed });
+        return this.state.isMusicPlayed ? this.sound.stop() : this.sound.start();
     }
 
     render() {
