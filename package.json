@@ -7,7 +7,7 @@
     "scripts": {
         "start": "webpack-dev-server --mode development",
         "build": "webpack --mode production",
-        "deploy": "yarn build && firebase deploy"
+        "deploy": "npm run build && firebase deploy"
     },
     "dependencies": {
         "hammerjs": "^2.0.8",
