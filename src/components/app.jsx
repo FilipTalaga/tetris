@@ -1,14 +1,10 @@
 import React from 'react';
 import Game from './game';
+import Background from './background';
 
 const App = () => (
     <React.Fragment>
-        <div className="shape-container">
-            <div id="standard"></div>
-        </div>
-        <div className="shape-container">
-            <div id="light"></div>
-        </div>
+        <Background />
         <Game />
     </React.Fragment>
 );
