@@ -75,8 +75,15 @@ class Game extends Component {
     }
 
     onSoundPlay = () => {
-        this.setState({ isMusicPlayed: !this.state.isMusicPlayed });
-        return this.state.isMusicPlayed ? this.sound.stop() : this.sound.start();
+        const { isMusicPlayed } = this.state;
+
+        isMusicPlayed
+            ? this.sound.stop()
+            : this.sound.start();
+
+        this.setState({
+            isMusicPlayed: !isMusicPlayed
+        });
     }
 
     render() {
