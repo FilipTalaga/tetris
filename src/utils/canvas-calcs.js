@@ -1,25 +1,29 @@
+/**
+ * Computed values, dependent on defined constants
+ */
 const horizontalColumnsCount = 14;
 const verticalColumnsCount = 20;
 const horizontalGapsCount = 16;
 const verticalGapsCount = 21;
 const horizontalMarginsCount = 3;
-const marginSize = window.innerWidth < 600 ? 10 : 20;
-const gapSize = window.innerWidth < 600 ? 2 : 3;
 const upperAreaHeight = window.innerHeight * 0.25;
-const canvasAreaHeight = window.innerHeight - upperAreaHeight;
-const size = Math.floor((window.innerWidth - horizontalGapsCount * gapSize - horizontalMarginsCount * marginSize) / horizontalColumnsCount);
-const allowedHeight = marginSize + size * verticalColumnsCount + gapSize * verticalGapsCount;
+const defaultMarginSize = window.innerWidth < 600 ? 10 : 20;
+export const gapSize = window.innerWidth < 600 ? 2 : 3;
 
-export const getSquareSize = () => allowedHeight > canvasAreaHeight
-    ? Math.floor((canvasAreaHeight - marginSize - verticalGapsCount * gapSize) / 20)
+/**
+ * Computed values, dependent on defined constants
+ */
+const canvasAreaHeight = window.innerHeight - upperAreaHeight;
+const size = Math.floor((window.innerWidth - horizontalGapsCount * gapSize - horizontalMarginsCount * defaultMarginSize) / horizontalColumnsCount);
+const allowedHeight = defaultMarginSize + size * verticalColumnsCount + gapSize * verticalGapsCount;
+
+export const squareSize = allowedHeight > canvasAreaHeight
+    ? Math.floor((canvasAreaHeight - defaultMarginSize - verticalGapsCount * gapSize) / 20)
     : size;
 
-export const getCanvasMargin = () => allowedHeight > canvasAreaHeight
-    ? marginSize
+export const marginSize = allowedHeight > canvasAreaHeight
+    ? defaultMarginSize
     : (window.innerWidth - size * horizontalColumnsCount - horizontalGapsCount * gapSize) / 3;
 
-export const getGapSize = () => gapSize;
 
-export const getMarginSize = () => marginSize;
-
-export const getCanvasDimension = elements => elements * getSquareSize() + (elements + 1) * gapSize;
+export const getCanvasDimension = elements => elements * squareSize + (elements + 1) * gapSize;

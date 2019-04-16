@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import makeGame from '../gameClasses/game';
-import { getSquareSize, getGapSize, getCanvasMargin, getCanvasDimension } from '../utils/canvas-calcs';
+import { squareSize, gapSize, marginSize, getCanvasDimension } from '../utils/canvas-calcs';
 import TitleBar from './title-bar';
 import Score from './score';
 import Background from './background';
 
-const makeContextState = (columnCount, rowCount, gap, size) => ({
+const makeContextState = (columnCount, rowCount) => ({
     width: getCanvasDimension(columnCount),
-    height: getCanvasDimension(rowCount),
-    gap: gap,
-    size: size
+    height: getCanvasDimension(rowCount)
 });
 
 class App extends Component {
@@ -21,20 +19,17 @@ class App extends Component {
             level: 0
         };
 
-        this.gap = getGapSize();
-        this.size = getSquareSize();
-
         this.gameCanvas = React.createRef();
         this.nextCanvas = React.createRef();
 
-        this.gameContext = makeContextState(10, 20, this.gap, this.size);
-        this.nextContext = makeContextState(4, 4, this.gap, this.size);
+        this.gameContext = makeContextState(10, 20);
+        this.nextContext = makeContextState(4, 4);
     }
 
     componentDidMount() {
         this.game = makeGame(
-            { ctx: this.gameCanvas.current.getContext('2d'), ctxState: this.gameContext },
-            { ctx: this.nextCanvas.current.getContext('2d'), ctxState: this.nextContext },
+            { ctx: this.gameCanvas.current.getContext('2d'), ...this.gameContext },
+            { ctx: this.nextCanvas.current.getContext('2d'), ...this.nextContext },
             this.onScoreUpdate, this.onGameOver);
         this.game.init();
     }
@@ -55,15 +50,15 @@ class App extends Component {
                 <Background />
                 <TitleBar></TitleBar>
                 <Score value={this.state.score}></Score>
-                <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: getCanvasMargin() }}>
+                <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: marginSize }}>
 
                     <canvas style={{ background: 'rgba(0, 0, 0, 0.50)' }}
                         width={this.gameContext.width}
                         height={this.gameContext.height}
                         ref={this.gameCanvas} />
 
-                    <div style={{ marginLeft: getCanvasMargin(), display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ height: (this.size * 2 + this.gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
+                    <div style={{ marginLeft: marginSize, display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ height: (squareSize * 2 + gapSize * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
                             <h2 style={{ margin: 'auto' }}>NEXT</h2>
                         </div>
 
@@ -73,10 +68,10 @@ class App extends Component {
                             ref={this.nextCanvas} />
 
                         <div style={{ flex: 1 }}>{/*spacer*/}</div>
-                        <div style={{ height: (this.size * 2 + this.gap * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
+                        <div style={{ height: (squareSize * 2 + gapSize * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
                             <h2 style={{ margin: 'auto' }}>LEVEL</h2>
                         </div>
-                        <div style={{ height: this.size * 4 + this.gap * 4, background: 'rgba(0, 0, 0, 0.5', display: 'flex' }}>
+                        <div style={{ height: squareSize * 4 + gapSize * 4, background: 'rgba(0, 0, 0, 0.5', display: 'flex' }}>
                             <h1 style={{ margin: 'auto', fontSize: '3rem' }}>{this.state.level}</h1>
                         </div>
                     </div>
