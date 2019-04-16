@@ -1,22 +1,24 @@
 import React from 'react';
 
+const stretched = {
+    height: '100%',
+    width: '100%'
+};
+
 const styles = {
     shape: {
+        ...stretched,
         position: 'absolute',
         filter: 'drop-shadow(0px 0px 5px rgba(0,0,0,0.2))',
-        height: '100%',
-        width: '100%',
         zIndex: '-1'
     },
     standard: {
-        width: '100%',
-        height: '100%',
+        ...stretched,
         clipPath: 'polygon(51% 32%, 100% 15%, 100% 100%, 26% 100%)',
         background: '#40446B'
     },
     light: {
-        width: '100%',
-        height: '100%',
+        ...stretched,
         clipPath: 'polygon(61% 0, 36% 29%, 83% 66%, 0 88%, 0 0)',
         background: '#555A8E'
     }
