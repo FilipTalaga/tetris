@@ -17,6 +17,21 @@ const makeAudio = (src, volume, loop = true) => {
     };
 };
 
+const styles = {
+    titleBar: {
+        height: 60,
+        display: 'flex',
+        background: 'rgba(0, 0, 0, 0.9)',
+        justifyContent: 'space-between'
+    },
+    title: {
+        margin: 'auto 15px auto'
+    },
+    icon: {
+        margin: 'auto 15px auto'
+    }
+};
+
 class TitleBar extends Component {
     constructor(props) {
         super(props);
@@ -25,10 +40,11 @@ class TitleBar extends Component {
             isMusicPlayed: false
         };
 
+        this.title = 'TETRIS';
         this.sound = makeAudio('tetris.mp3', 0.5);
     }
 
-    onSoundPlay = () => {
+    onSoundButtonClick = () => {
         const { isMusicPlayed } = this.state;
 
         isMusicPlayed
@@ -42,11 +58,11 @@ class TitleBar extends Component {
 
     render() {
         return (
-            <div style={{ height: 60, display: 'flex', background: 'rgba(0, 0, 0, 0.9)', justifyContent: 'space-between' }}>
-                <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
+            <div style={styles.titleBar}>
+                <h2 style={styles.title}>{this.title}</h2>
                 {this.state.isMusicPlayed
-                    ? <IconButton onClick={this.onSoundPlay}><FaVolumeUp></FaVolumeUp></IconButton>
-                    : <IconButton onClick={this.onSoundPlay}><FaVolumeOff></FaVolumeOff></IconButton>
+                    ? <IconButton style={styles.icon} onClick={this.onSoundButtonClick}><FaVolumeUp /></IconButton>
+                    : <IconButton style={styles.icon} onClick={this.onSoundButtonClick}><FaVolumeOff /></IconButton>
                 }
             </div>);
     }
