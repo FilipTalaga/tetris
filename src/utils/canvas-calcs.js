@@ -21,3 +21,5 @@ export const getCanvasMargin = () => allowedHeight > canvasAreaHeight
 export const getGapSize = () => gapSize;
 
 export const getMarginSize = () => marginSize;
+
+export const getCanvasDimension = elements => elements * getSquareSize() + (elements + 1) * gapSize;
