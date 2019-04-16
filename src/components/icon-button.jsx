@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FaMusic } from 'react-icons/fa';
 
 const IconButton = props =>
@@ -18,5 +19,9 @@ const IconButton = props =>
             <FaMusic></FaMusic>
         </div>
     </button>;
+
+IconButton.propTypes = {
+    onClick: PropTypes.func
+};
 
 export default IconButton;
