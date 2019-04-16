@@ -3,6 +3,7 @@ import makeGame from '../gameClasses/game';
 import PureCanvas from './pure-canvas';
 import { getSquareSize, getGapSize, getCanvasMargin } from '../utils';
 import TitleBar from './title-bar';
+import Score from './score';
 
 class Game extends Component {
     constructor(props) {
@@ -60,11 +61,7 @@ class Game extends Component {
         return (
             <React.Fragment>
                 <TitleBar></TitleBar>
-                <div style={{ flex: 1, display: 'flex', background: 'rgba(0, 0, 0, 0.7)' }}>
-                    <h1 style={{ margin: 'auto', letterSpacing: '.3rem' }}>
-                        SCORE: {this.state.score}
-                    </h1>
-                </div>
+                <Score value={this.state.score}></Score>
                 <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: canvasMargin }}>
                     <PureCanvas cols={10} rows={20} contextRef={this.onGameContextUpdate} />
                     <div style={{ marginLeft: canvasMargin, display: 'flex', flexDirection: 'column' }}>
