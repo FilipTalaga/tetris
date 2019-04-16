@@ -3,15 +3,25 @@ import makeGame from '../gameClasses/game';
 import PureCanvas from './pure-canvas';
 import { getSquareSize, getGapSize, getCanvasMargin } from '../utils';
 import IconButton from './icon-button';
+import { FaVolumeOff, FaVolumeUp } from 'react-icons/fa';
 
 class Game extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { score: 0, level: 0 };
+        this.state = {
+            score: 0,
+            level: 0,
+            isMusicPlayed: false
+        };
 
         this.isGameCanvasReady = false;
         this.isShapeCanvasReady = false;
+
+        this.sound = new Audio();
+        this.sound.src = 'tetris.mp3';
+        this.sound.loop = true;
+        this.sound.volume = 0.5;
     }
 
     onGameContextUpdate = (ctx, ctxState) => {
@@ -52,11 +62,15 @@ class Game extends Component {
         this.game.dispose();
     }
 
-    onSoundPlay() {
-        console.log('audio');
-        const sound = new Audio();
-        sound.src = 'tetris.mp3';
-        sound.play();
+    onSoundPlay = () => {
+        if (this.state.isMusicPlayed) {
+            this.sound.pause();
+            this.sound.currentTime = 0;
+        } else {
+            this.sound.play();
+        }
+
+        this.setState({ isMusicPlayed: !this.state.isMusicPlayed });
     }
 
     render() {
@@ -68,7 +82,10 @@ class Game extends Component {
             <React.Fragment>
                 <div style={{ height: 60, display: 'flex', background: 'rgba(0, 0, 0, 0.9)', justifyContent: 'space-between' }}>
                     <h2 style={{ margin: 'auto 15px auto' }}>TETRIS</h2>
-                    <IconButton onClick={this.onSoundPlay}></IconButton>
+                    {this.state.isMusicPlayed
+                        ? <IconButton onClick={this.onSoundPlay}><FaVolumeUp></FaVolumeUp></IconButton>
+                        : <IconButton onClick={this.onSoundPlay}><FaVolumeOff></FaVolumeOff></IconButton>
+                    }
                 </div>
                 <div style={{ flex: 1, display: 'flex', background: 'rgba(0, 0, 0, 0.7)' }}>
                     <h1 style={{ margin: 'auto', letterSpacing: '.3rem' }}>
