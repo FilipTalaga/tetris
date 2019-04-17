@@ -2,6 +2,7 @@ import makePlayer from './player';
 import makeGrid from './grid';
 import makeDrawer from './drawer';
 import Hammer from 'hammerjs';
+import { getTimeByLevel } from '../utils/game-calcs';
 
 const makeGame = (gameCanvas, shapeCanvas, gameAreaRef, onGameUpdate, onGameOver) => {
     let lastTimestampDown = 0;
@@ -85,16 +86,6 @@ const makeGame = (gameCanvas, shapeCanvas, gameAreaRef, onGameUpdate, onGameOver
         if (e.key === 'ArrowRight') right = true;
         if (e.key === 'ArrowUp') up = true;
     }
-
-    const levels = 20;
-    const zeroLevelFrames = 48;
-    const framesPerSecond = 60;
-    const singleFrameTime = 1000 / framesPerSecond;
-    const framesPerLevelDrop = zeroLevelFrames / levels;
-
-    const getTimeByLevel = level => level < levels
-        ? Math.round((zeroLevelFrames - level * framesPerLevelDrop) * singleFrameTime)
-        : Math.round((zeroLevelFrames - (levels - 1) * framesPerLevelDrop) * singleFrameTime);
 
     function loop(timestamp) {
         if (timestamp - lastTimestampDown >= (speedup ? 50 : getTimeByLevel(level))) {
