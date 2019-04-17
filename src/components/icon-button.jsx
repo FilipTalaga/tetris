@@ -34,7 +34,7 @@ const styles = {
 const IconButton = props =>
     <div style={{ ...styles.container, ...props.style }}>
         <div style={styles.cell}>
-            <button style={styles.button} onClick={props.onClick}></button>
+            <button aria-label="icon-button" style={styles.button} onClick={props.onClick}></button>
         </div>
         <div style={{ ...styles.cell, pointerEvents: 'none' }}>
             {React.cloneElement(props.children, { style: styles.icon })}
