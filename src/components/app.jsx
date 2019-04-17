@@ -30,10 +30,11 @@ class App extends Component {
 
         this.gameCanvas = { width: getCanvasSize(10), height: getCanvasSize(20), ref: React.createRef() };
         this.nextCanvas = { width: getCanvasSize(4), height: getCanvasSize(4), ref: React.createRef() };
+        this.gameAreaRef = React.createRef();
     }
 
     componentDidMount() {
-        this.game = makeGame(this.gameCanvas, this.nextCanvas, this.onGameUpdate, this.onGameOver);
+        this.game = makeGame(this.gameCanvas, this.nextCanvas, this.gameAreaRef, this.onGameUpdate, this.onGameOver);
         this.game.init();
     }
 
@@ -57,7 +58,7 @@ class App extends Component {
                 <Background />
                 <TitleBar></TitleBar>
                 <Score value={this.state.score}></Score>
-                <div style={styles.gameSection}>
+                <div ref={this.gameAreaRef} style={styles.gameSection}>
                     <Game width={this.gameCanvas.width} height={this.gameCanvas.height} canvasRef={this.gameCanvas.ref} />
                     <div style={styles.sideArea}>
                         <Next width={this.nextCanvas.width} height={this.nextCanvas.height} canvasRef={this.nextCanvas.ref} />

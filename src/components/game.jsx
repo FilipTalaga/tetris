@@ -8,7 +8,7 @@ const styles = {
 };
 
 const Game = ({ width, height, canvasRef }) =>
-    <canvas id="canvas" style={styles.canvas} width={width} height={height} ref={canvasRef} />;
+    <canvas style={styles.canvas} width={width} height={height} ref={canvasRef} />;
 
 Game.propTypes = {
     width: PropTypes.number,

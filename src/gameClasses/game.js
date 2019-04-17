@@ -3,7 +3,7 @@ import makeGrid from './grid';
 import makeDrawer from './drawer';
 import Hammer from 'hammerjs';
 
-const makeGame = (gameCanvas, shapeCanvas, onGameUpdate, onGameOver) => {
+const makeGame = (gameCanvas, shapeCanvas, gameAreaRef, onGameUpdate, onGameOver) => {
     let lastTimestampDown = 0;
     let lastTimestampSide = 0;
     let lastTimestampRotate = 0;
@@ -147,7 +147,7 @@ const makeGame = (gameCanvas, shapeCanvas, onGameUpdate, onGameOver) => {
             document.addEventListener('keydown', handleKeyDown);
             document.addEventListener('keyup', handleKeyUp);
 
-            const hammertime = new Hammer(document.getElementById('canvas'));
+            const hammertime = new Hammer(gameAreaRef.current);
             hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL });
             hammertime.on('panleft', onPanLeft);
             hammertime.on('panright', onPanRight);
