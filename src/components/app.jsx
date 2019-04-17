@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
 import makeGame from '../gameClasses/game';
-import { squareSize, gapSize, marginSize, getCanvasSize } from '../utils/canvas-calcs';
+import { marginSize, getCanvasSize } from '../utils/canvas-calcs';
 import TitleBar from './title-bar';
 import Score from './score';
 import Background from './background';
+import Game from './game';
+import Next from './next';
+import Level from './level';
+
+const styles = {
+    gameSection: {
+        display: 'flex',
+        margin: '0 auto',
+        padding: marginSize
+    },
+    sideArea: {
+        marginLeft: marginSize,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between'
+    }
+};
 
 class App extends Component {
     constructor(props) {
@@ -36,30 +53,11 @@ class App extends Component {
                 <Background />
                 <TitleBar></TitleBar>
                 <Score value={this.state.score}></Score>
-                <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: marginSize }}>
-
-                    <canvas style={{ background: 'rgba(0, 0, 0, 0.50)' }}
-                        width={this.gameCanvas.width}
-                        height={this.gameCanvas.height}
-                        ref={this.gameCanvas.ref} />
-
-                    <div style={{ marginLeft: marginSize, display: 'flex', flexDirection: 'column' }}>
-                        <div style={{ height: (squareSize * 2 + gapSize * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
-                            <h2 style={{ margin: 'auto' }}>NEXT</h2>
-                        </div>
-
-                        <canvas style={{ background: 'rgba(0, 0, 0, 0.50)' }}
-                            width={this.nextCanvas.width}
-                            height={this.nextCanvas.height}
-                            ref={this.nextCanvas.ref} />
-
-                        <div style={{ flex: 1 }}>{/*spacer*/}</div>
-                        <div style={{ height: (squareSize * 2 + gapSize * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
-                            <h2 style={{ margin: 'auto' }}>LEVEL</h2>
-                        </div>
-                        <div style={{ height: squareSize * 4 + gapSize * 4, background: 'rgba(0, 0, 0, 0.5', display: 'flex' }}>
-                            <h1 style={{ margin: 'auto', fontSize: '3rem' }}>{this.state.level}</h1>
-                        </div>
+                <div style={styles.gameSection}>
+                    <Game width={this.gameCanvas.width} height={this.gameCanvas.height} canvasRef={this.gameCanvas.ref} />
+                    <div style={styles.sideArea}>
+                        <Next width={this.nextCanvas.width} height={this.nextCanvas.height} canvasRef={this.nextCanvas.ref} />
+                        <Level level={this.state.level} />
                     </div>
                 </div>
             </React.Fragment>
