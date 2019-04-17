@@ -3,7 +3,7 @@ import makeGrid from './grid';
 import makeDrawer from './drawer';
 import Hammer from 'hammerjs';
 
-const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
+const makeGame = (gameCanvas, shapeCanvas, onGameUpdate, onGameOver) => {
     let lastTimestampDown = 0;
     let lastTimestampSide = 0;
     let lastTimestampRotate = 0;
@@ -21,9 +21,28 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
     let gameDrawer = makeDrawer(gameCanvas);
     let shapeGrid = makeGrid(4, 4);
     let shapeDrawer = makeDrawer(shapeCanvas);
-    let player = makePlayer(gameGrid, shapeGrid, onScoreUpdate, onGameOver);
+    let player = makePlayer(gameGrid, shapeGrid, onPlayerUpdate, onGameOver);
 
     let rAF = null;
+
+    let score = 0;
+    let lines = 0;
+    let level = 0;
+
+    function onPlayerUpdate(removedLines) {
+        score += getScoreByLines(removedLines);
+        lines += removedLines;
+        level = Math.floor(lines / 10);
+
+        onGameUpdate(score, lines, level);
+    }
+
+    function getScoreByLines(removedLines) {
+        if (removedLines === 1) return 40;
+        if (removedLines === 2) return 100;
+        if (removedLines === 3) return 300;
+        if (removedLines === 4) return 1200;
+    }
 
     function onPanLeft() {
         panLeft++;
@@ -67,8 +86,18 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
         if (e.key === 'ArrowUp') up = true;
     }
 
+    const levels = 20;
+    const zeroLevelFrames = 48;
+    const framesPerSecond = 60;
+    const singleFrameTime = 1000 / framesPerSecond;
+    const framesPerLevelDrop = zeroLevelFrames / levels;
+
+    const getTimeByLevel = level => level < levels
+        ? Math.round((zeroLevelFrames - level * framesPerLevelDrop) * singleFrameTime)
+        : Math.round((zeroLevelFrames - (levels - 1) * framesPerLevelDrop) * singleFrameTime);
+
     function loop(timestamp) {
-        if (timestamp - lastTimestampDown >= (speedup ? 50 : 400)) {
+        if (timestamp - lastTimestampDown >= (speedup ? 50 : getTimeByLevel(level))) {
             player.moveDown();
             lastTimestampDown = timestamp;
         }
@@ -139,11 +168,15 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
             right = false;
             up = false;
 
+            score = 0;
+            lines = 0;
+            level = 0;
+
             gameGrid = makeGrid(20, 10);
             gameDrawer = makeDrawer(gameCanvas);
             shapeGrid = makeGrid(4, 4);
             shapeDrawer = makeDrawer(shapeCanvas);
-            player = makePlayer(gameGrid, shapeGrid, onScoreUpdate, onGameOver);
+            player = makePlayer(gameGrid, shapeGrid, onPlayerUpdate, onGameOver);
         }
     };
 };

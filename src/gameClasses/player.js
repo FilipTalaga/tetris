@@ -26,7 +26,7 @@ function setShapeValueOnGrid(grid, shape, value, posX = 0, posY = 0) {
     });
 }
 
-function makePlayer(gameGrid, shapeGrid, updateScore, onGameOver) {
+function makePlayer(gameGrid, shapeGrid, onPlayerUpdate, onGameOver) {
     let generatedShapes = generateNewShape();
 
     let shape = makeShape(generatedShapes.current);
@@ -70,19 +70,17 @@ function makePlayer(gameGrid, shapeGrid, updateScore, onGameOver) {
     }
 
     function removeCompleteLines() {
-        let removedRows = 0;
+        let removedLines = 0;
         for (let row = 0; row < gameGrid.rows(); row++) {
             if (gameGrid.isRowComplete(row)) {
                 gameGrid.removeRow(row);
-                removedRows++;
+                removedLines++;
             }
         }
 
-        if (removedRows === 1) updateScore(40);
-        if (removedRows === 2) updateScore(100);
-        if (removedRows === 3) updateScore(300);
-        if (removedRows === 4) updateScore(1200);
+        if (removedLines > 0) onPlayerUpdate(removedLines);
     }
+
 
     function tryMove(moveName) {
         setShapeValueOnGrid(gameGrid, shape, false, posX, posY);

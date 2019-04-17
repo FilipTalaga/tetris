@@ -26,18 +26,19 @@ const styles = {
     }
 };
 
-const Level = ({ level }) =>
+const Indicator = ({ label, value }) =>
     <div>
         <div style={styles.label.background}>
-            <h2 style={styles.label.text}>LEVEL</h2>
+            <h2 style={styles.label.text}>{label}</h2>
         </div>
         <div style={styles.level.background}>
-            <h1 style={styles.level.text}>{level}</h1>
+            <h1 style={styles.level.text}>{value}</h1>
         </div>
     </div>;
 
-Level.propTypes = {
-    level: PropTypes.number
+Indicator.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.number,
 };
 
-export default Level;
+export default Indicator;
