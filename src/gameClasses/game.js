@@ -18,9 +18,9 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
     let panDown = 0;
 
     let gameGrid = makeGrid(20, 10);
-    let gameDrawer = makeDrawer(gameCanvas.ctx, gameCanvas.width, gameCanvas.height);
+    let gameDrawer = makeDrawer(gameCanvas);
     let shapeGrid = makeGrid(4, 4);
-    let shapeDrawer = makeDrawer(shapeCanvas.ctx, shapeCanvas.width, shapeCanvas.height);
+    let shapeDrawer = makeDrawer(shapeCanvas);
     let player = makePlayer(gameGrid, shapeGrid, onScoreUpdate, onGameOver);
 
     let rAF = null;
@@ -140,9 +140,9 @@ const makeGame = (gameCanvas, shapeCanvas, onScoreUpdate, onGameOver) => {
             up = false;
 
             gameGrid = makeGrid(20, 10);
-            gameDrawer = makeDrawer(gameCanvas.ctx, gameCanvas.width, gameCanvas.height);
+            gameDrawer = makeDrawer(gameCanvas);
             shapeGrid = makeGrid(4, 4);
-            shapeDrawer = makeDrawer(shapeCanvas.ctx, shapeCanvas.width, shapeCanvas.height);
+            shapeDrawer = makeDrawer(shapeCanvas);
             player = makePlayer(gameGrid, shapeGrid, onScoreUpdate, onGameOver);
         }
     };

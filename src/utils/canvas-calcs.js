@@ -26,4 +26,4 @@ export const marginSize = allowedHeight > canvasAreaHeight
     : (window.innerWidth - size * horizontalColumnsCount - horizontalGapsCount * gapSize) / 3;
 
 
-export const getCanvasDimension = elements => elements * squareSize + (elements + 1) * gapSize;
+export const getCanvasSize = elements => elements * squareSize + (elements + 1) * gapSize;

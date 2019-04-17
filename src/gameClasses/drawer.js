@@ -1,12 +1,14 @@
 import colors from '../consts/colors';
 import { squareSize, gapSize } from '../utils/canvas-calcs';
 
-const makeDrawer = (ctx, width, height) => {
+const makeDrawer = ({ width, height, ref }) => {
     const brickColors = {
         hues: [0, 30, 50, 100, 180, 230, 300],
         saturation: 70,
         lightness: 50
     };
+
+    const ctx = ref.current.getContext('2d');
 
     return {
         clearCtx: () => ctx.clearRect(0, 0, width, height),

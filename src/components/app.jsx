@@ -1,36 +1,22 @@
 import React, { Component } from 'react';
 import makeGame from '../gameClasses/game';
-import { squareSize, gapSize, marginSize, getCanvasDimension } from '../utils/canvas-calcs';
+import { squareSize, gapSize, marginSize, getCanvasSize } from '../utils/canvas-calcs';
 import TitleBar from './title-bar';
 import Score from './score';
 import Background from './background';
-
-const makeContextState = (columnCount, rowCount) => ({
-    width: getCanvasDimension(columnCount),
-    height: getCanvasDimension(rowCount)
-});
 
 class App extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            score: 0,
-            level: 0
-        };
+        this.state = { score: 0, level: 0 };
 
-        this.gameCanvas = React.createRef();
-        this.nextCanvas = React.createRef();
-
-        this.gameContext = makeContextState(10, 20);
-        this.nextContext = makeContextState(4, 4);
+        this.gameCanvas = { width: getCanvasSize(10), height: getCanvasSize(20), ref: React.createRef() };
+        this.nextCanvas = { width: getCanvasSize(4), height: getCanvasSize(4), ref: React.createRef() };
     }
 
     componentDidMount() {
-        this.game = makeGame(
-            { ctx: this.gameCanvas.current.getContext('2d'), ...this.gameContext },
-            { ctx: this.nextCanvas.current.getContext('2d'), ...this.nextContext },
-            this.onScoreUpdate, this.onGameOver);
+        this.game = makeGame(this.gameCanvas, this.nextCanvas, this.onScoreUpdate, this.onGameOver);
         this.game.init();
     }
 
@@ -53,9 +39,9 @@ class App extends Component {
                 <div id="canvas" style={{ display: 'flex', margin: '0 auto', padding: marginSize }}>
 
                     <canvas style={{ background: 'rgba(0, 0, 0, 0.50)' }}
-                        width={this.gameContext.width}
-                        height={this.gameContext.height}
-                        ref={this.gameCanvas} />
+                        width={this.gameCanvas.width}
+                        height={this.gameCanvas.height}
+                        ref={this.gameCanvas.ref} />
 
                     <div style={{ marginLeft: marginSize, display: 'flex', flexDirection: 'column' }}>
                         <div style={{ height: (squareSize * 2 + gapSize * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
@@ -63,9 +49,9 @@ class App extends Component {
                         </div>
 
                         <canvas style={{ background: 'rgba(0, 0, 0, 0.50)' }}
-                            width={this.nextContext.width}
-                            height={this.nextContext.height}
-                            ref={this.nextCanvas} />
+                            width={this.nextCanvas.width}
+                            height={this.nextCanvas.height}
+                            ref={this.nextCanvas.ref} />
 
                         <div style={{ flex: 1 }}>{/*spacer*/}</div>
                         <div style={{ height: (squareSize * 2 + gapSize * 2), display: 'flex', background: 'rgba(0, 0, 0, 0.7' }}>
